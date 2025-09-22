@@ -1,18 +1,18 @@
 <template>
   <nav
-    class="bg-white/95 backdrop-blur border-b border-gray-200/40 dark:bg-gray-900/95 dark:border-gray-700/40 fixed top-4 left-4 right-4 z-50 rounded-2xl shadow-sm shadow-black/5 dark:shadow-black/10 transition-all duration-300"
+    class="bg-white/95 backdrop-blur border-b border-gray-200/40 dark:bg-gray-900/95 dark:border-gray-700/40 fixed top-4 left-4 right-4 z-50 rounded-2xl shadow-md shadow-black/25 dark:shadow-black/70 transition-all duration-300"
   >
     <div class="max-w-screen-xl mx-auto px-3 py-2 flex items-center justify-between">
       <!-- Logo élégant -->
       <NuxtLink to="/" class="flex items-center space-x-2 rtl:space-x-reverse z-10">
         <img
-          src="https://flowbite.com/docs/images/logo.svg"
-          class="h-8"
+          src="/images/logo.png"
+          class="h-15"
           alt="Logo"
         />
-        <span class="text-sm font-medium whitespace-nowrap dark:text-white tracking-tight">
-          Rainbow-business
-        </span>
+       <!-- <span class="text-2XL font-medium whitespace-nowrap dark:text-red-500 tracking-tight">
+          RBC
+        </span>-->
       </NuxtLink>
 
       <!-- Menu CENTRÉ — version élégante -->

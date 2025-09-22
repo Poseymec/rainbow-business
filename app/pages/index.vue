@@ -1,22 +1,37 @@
 <template>
-
-
   <!-- Contenu principal -->
-  <main class="pt-28 pb-20 px-4 md:px-8">
-    <!-- Section Héro -->
+  <main class="pt-15 pb-20 px-4 md:px-8">
+    <!-- Section Héro — TOUT est dans un seul conteneur avec fond transparent -->
     <section class="max-w-4xl mx-auto text-center mb-24">
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent mb-6">
-        Bienvenue chez Rainbow Business
-      </h1>
-      <p class="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-        Découvrez nos solutions innovantes, conçues pour propulser votre entreprise vers de nouveaux sommets.
-      </p>
-      <NuxtLink
-        to="/contact"
-        class="inline-block px-8 py-4 bg-gradient-to-r from-red-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
-      >
-        Commencez maintenant
-      </NuxtLink>
+      <!-- 🔷 Conteneur unique pour logo + titre + description -->
+      <div class="bg-transparent backdrop-blur-sm rounded-2xl px-6 py-12">
+        <!-- Logo -->
+        <div class="mb-8">
+          <img
+            src="/images/logo.png"
+            alt="Logo Rainbow Business"
+            class="mx-auto h-40 md:h-40 lg:h-60"
+          />
+        </div>
+
+        <!-- Titre -->
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent mb-6">
+          Bienvenue chez Rainbow Business
+        </h1>
+
+        <!-- Description -->
+        <p class="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+          Rainbow Business vous présente une sélection de produits variés, alliant qualité et style. Découvrez facilement ce dont vous avez besoin grâce à notre site clair et moderne
+        </p>
+
+        <!-- Bouton -->
+        <NuxtLink
+          to="/contact"
+          class="inline-block px-8 py-4 bg-gradient-to-r from-red-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+        >
+          Voir nos produits
+        </NuxtLink>
+      </div>
     </section>
 
     <!-- Carousel en bas -->
@@ -81,25 +96,28 @@
       </div>
     </section>
   </main>
+  <!-- Section Contact + Newsletter -->
+  <contact />
+
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-
+import { ref, onMounted, onUnmounted } from 'vue'
+import contact from './clients/contact.vue'
 
 // Images du carousel (remplace par tes propres URLs)
 const images = ref([
   {
-    src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Équipe professionnelle en réunion'
+    src: '/images/image1.jpg',
+    alt: 'produit 1'
   },
   {
-    src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Bureau moderne avec ordinateurs'
+    src: '/images/image2.jpg',
+    alt: 'produit 2'
   },
   {
-    src: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Présentation à un client'
+    src: '/images/image3.jpg',
+    alt: 'produit 3'
   }
 ])
 

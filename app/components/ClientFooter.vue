@@ -7,14 +7,14 @@
         <div>
           <NuxtLink to="/" class="flex items-center space-x-2 mb-4">
             <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              class="h-8"
+              src="/images/logo.png"
+              class="h-15"
               alt="Rainbow Business Logo"
             />
             <span class="text-xl font-bold">Rainbow Business</span>
           </NuxtLink>
           <p class="text-gray-400 leading-relaxed max-w-xs">
-            Des solutions innovantes pour propulser votre entreprise vers l'excellence.
+           Découvrez nos produits variés et restez connectés pour nos nouveautés."
           </p>
         </div>
 
@@ -37,10 +37,10 @@
         <div>
           <h3 class="text-lg font-semibold mb-4">Contact</h3>
           <address class="not-italic text-gray-400 space-y-2">
-            <p>123 Rue de l'Innovation</p>
-            <p>75000 Paris, France</p>
-            <p>📧 contact@rainbow.business</p>
-            <p>📞 +33 1 23 45 67 89</p>
+            <p>Douala, Cameroun</p>
+            <p>Pharmacie Axial montée Diedo-Douala</p>
+            <p>📧 rainbow.bc.ltd@gmail.com</p>
+            <p>📞 697065493</p>
           </address>
         </div>
 
