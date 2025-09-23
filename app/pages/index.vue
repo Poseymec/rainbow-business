@@ -15,8 +15,8 @@
         </div>
 
         <!-- Titre -->
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent mb-6">
-          Bienvenue chez Rainbow Business
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent mb-6">
+          Bienvenue chez Rainbow Business end consulting
         </h1>
 
         <!-- Description -->
@@ -27,7 +27,7 @@
         <!-- Bouton -->
         <NuxtLink
           to="/contact"
-          class="inline-block px-8 py-4 bg-gradient-to-r from-red-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+          class="inline-block px-8 py-4 bg-gradient-to-r from-red-600 to-red-900 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
         >
           Voir nos produits
         </NuxtLink>

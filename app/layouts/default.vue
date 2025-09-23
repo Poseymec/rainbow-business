@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import ClientNavbar from '~/components/ClientNavbar.vue'
-import ClientFooter from '~/components/ClientFooter.vue'
+//import ClientNavbar from '~/components/ClientNavbar.vue'
+//import ClientFooter from '~/components/ClientFooter.vue'
 
 </script>
