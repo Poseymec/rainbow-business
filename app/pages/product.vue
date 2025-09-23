@@ -258,9 +258,12 @@ const resetFilters = () => {
               <span class="text-lg font-bold text-[#E8192C]">
                 {{ product.price.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }) }}
               </span>
-              <button class="px-3 py-1 text-sm bg-[#E8192C] hover:bg-red-700 text-white rounded transition-colors">
+             <NuxtLink
+                :to="`/produit/productOverView/${product.id}`"
+                class="px-3 py-1 text-sm bg-[#E8192C] hover:bg-red-700 text-white rounded transition-colors"
+                >
                 Voir
-              </button>
+            </NuxtLink>
             </div>
           </div>
         </div>
