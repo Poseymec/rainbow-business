@@ -1,33 +1,33 @@
-<!-- app/components/admin/SliderList.vue -->
+<!-- app/components/admin/CategoryList.vue -->
 <script setup>
 import { ref, computed } from 'vue'
 definePageMeta({
     layout: 'admin'
 })
 
-const sliders = ref([
-  { id: 1, rank: 1, name: 'Slider Accueil 1', status: 'active' },
-  { id: 2, rank: 2, name: 'Slider Promo', status: 'inactive' }
+const categories = ref([
+  { id: 1, rank: 1, name: 'Imprimantes', status: 'active' },
+  { id: 2, rank: 2, name: 'Scanners', status: 'inactive' }
 ])
 
 const searchTerm = ref('')
 const statusFilter = ref('all')
 
-const filteredSliders = computed(() => {
-  return sliders.value.filter(slider => {
-    const matchesSearch = slider.name.toLowerCase().includes(searchTerm.value.toLowerCase())
-    const matchesStatus = statusFilter.value === 'all' || slider.status === statusFilter.value
+const filteredCategories = computed(() => {
+  return categories.value.filter(category => {
+    const matchesSearch = category.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+    const matchesStatus = statusFilter.value === 'all' || category.status === statusFilter.value
     return matchesSearch && matchesStatus
   })
 })
 
-const toggleStatus = (slider) => {
-  slider.status = slider.status === 'active' ? 'inactive' : 'active'
+const toggleStatus = (category) => {
+  category.status = category.status === 'active' ? 'inactive' : 'active'
 }
 
-const confirmDelete = (slider) => {
-  if (confirm(`Supprimer "${slider.name}" ?`)) {
-    sliders.value = sliders.value.filter(s => s.id !== slider.id)
+const confirmDelete = (category) => {
+  if (confirm(`Supprimer "${category.name}" ?`)) {
+    categories.value = categories.value.filter(c => c.id !== category.id)
   }
 }
 </script>
@@ -35,7 +35,7 @@ const confirmDelete = (slider) => {
 <template>
   <!-- 🔷 Entête -->
   <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Sliders</h1>
+    <h1 class="text-2xl font-bold text-red-600">Catégories</h1>
     <div class="mt-4 flex flex-col sm:flex-row gap-4">
       <input
         v-model="searchTerm"
@@ -52,7 +52,7 @@ const confirmDelete = (slider) => {
         <option value="inactive">Inactif</option>
       </select>
       <NuxtLink
-        to="/admin/sliders/create"
+        to="/admin/category/create"
         class="px-4 py-2 bg-[#E8192C] text-white rounded-lg hover:bg-red-700 transition-colors text-center"
       >
         Ajouter
@@ -73,52 +73,47 @@ const confirmDelete = (slider) => {
       </thead>
       <tbody>
         <tr
-          v-for="slider in filteredSliders"
-          :key="slider.id"
+          v-for="category in filteredCategories"
+          :key="category.id"
           class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
         >
-          <td class="px-4 py-3">{{ slider.rank }}</td>
+          <td class="px-4 py-3">{{ category.rank }}</td>
           <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
-            {{ slider.name }}
+            {{ category.name }}
           </td>
           <td class="px-4 py-3">
             <span
               :class="[
                 'px-2 py-1 rounded-full text-xs font-medium',
-                slider.status === 'active'
+                category.status === 'active'
                   ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                   : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
               ]"
             >
-              {{ slider.status === 'active' ? 'Actif' : 'Inactif' }}
+              {{ category.status === 'active' ? 'Actif' : 'Inactif' }}
             </span>
           </td>
           <td class="px-4 py-3 space-x-1 whitespace-nowrap">
+           
             <NuxtLink
-              :to="`/admin/sliders/view/${slider.id}`"
-              class="px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700"
-            >
-              👁️
-            </NuxtLink>
-            <NuxtLink
-              :to="`/admin/sliders/edit/${slider.id}`"
+              :to="`/admin/category/${category.id}/edit`"
               class="px-2 py-1 bg-yellow-600 text-white rounded text-xs hover:bg-yellow-700"
             >
               ✏️
             </NuxtLink>
             <button
-              @click="toggleStatus(slider)"
+              @click="toggleStatus(category)"
               :class="[
                 'px-2 py-1 text-white text-xs rounded',
-                slider.status === 'active'
+                category.status === 'active'
                   ? 'bg-red-600 hover:bg-red-700'
                   : 'bg-green-600 hover:bg-green-700'
               ]"
             >
-              {{ slider.status === 'active' ? '🔴' : '🟢' }}
+              {{ category.status === 'active' ? '🔴' : '🟢' }}
             </button>
             <button
-              @click="confirmDelete(slider)"
+              @click="confirmDelete(category)"
               class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
             >
               🗑️

@@ -31,7 +31,7 @@
           <button
             type="button"
             class="flex items-center w-full p-3 text-left rounded-lg hover:bg-red-700 transition-colors group"
-            @click="toggleSection('categories')"
+            @click="toggleSection('categorys')"
           >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -39,7 +39,7 @@
             <span>Catégories</span>
             <svg
               class="w-4 h-4 ml-auto transition-transform"
-              :class="{ 'rotate-180': openSections.categories }"
+              :class="{ 'rotate-180': openSections.categorys }"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -47,21 +47,21 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          <ul v-show="openSections.categories" class="pl-6 mt-1 space-y-1">
+          <ul v-show="openSections.categorys" class="pl-6 mt-1 space-y-1">
             <li>
               <NuxtLink
-                to="/admin/categorie/CategorieList"
+                to="/admin/category/"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/categorie/CategorieList' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/category/' ? 'bg-red-600' : ''"
               >
                 📋 Liste 
               </NuxtLink>
             </li>
             <li>
               <NuxtLink
-                to="/admin/categorie/AddCategorie"
+                to="/admin/category/create"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/categorie/AddCategorie' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/category/create' ? 'bg-red-600' : ''"
               >
                 ➕ Ajouter
               </NuxtLink>
@@ -71,7 +71,7 @@
 
         <hr class="border-red-800 my-2" />
 
-        <!-- Produits -->
+        <!-- products -->
         <li>
           <button
             type="button"
@@ -81,7 +81,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
-            <span>Produits</span>
+            <span>produits</span>
             <svg
               class="w-4 h-4 ml-auto transition-transform"
               :class="{ 'rotate-180': openSections.products }"
@@ -95,18 +95,18 @@
           <ul v-show="openSections.products" class="pl-6 mt-1 space-y-1">
             <li>
               <NuxtLink
-                to="/admin/produit/ProduitList"
+                to="/admin/product/"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/produit/ProduitList' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/product/' ? 'bg-red-600' : ''"
               >
                 📋 Liste 
               </NuxtLink>
             </li>
             <li>
               <NuxtLink
-                to="/admin/produit/AddProduit"
+                to="/admin/product/create"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/produit/AddProduit' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/product/create' ? 'bg-red-600' : ''"
               >
                 ➕ Ajouter 
               </NuxtLink>
@@ -140,18 +140,18 @@
           <ul v-show="openSections.sliders" class="pl-6 mt-1 space-y-1">
             <li>
               <NuxtLink
-                to="/admin/slider/SliderList"
+                to="/admin/slider/"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/slider/SliderList' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/slider/' ? 'bg-red-600' : ''"
               >
                 📋 Liste 
               </NuxtLink>
             </li>
             <li>
               <NuxtLink
-                to="/admin/slider/AddSlider"
+                to="/admin/slider/create"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/sliders/AddSlider' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/sliders/create' ? 'bg-red-600' : ''"
               >
                 ➕ Ajouter 
               </NuxtLink>
@@ -185,18 +185,18 @@
           <ul v-show="openSections.siteElements" class="pl-6 mt-1 space-y-1">
             <li>
               <NuxtLink
-                to="/admin/site-element/SiteElementList"
+                to="/admin/site-element"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/site-element/SiteElementLisT' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/site-element/' ? 'bg-red-600' : ''"
               >
                 📋 Liste 
               </NuxtLink>
             </li>
             <li>
               <NuxtLink
-                to="/admin/site-element/AddSiteElement"
+                to="/admin/site-element/create"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/site-element/AddSiteElement' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/site-element/create' ? 'bg-red-600' : ''"
               >
                 ➕ Ajouter un contenu
               </NuxtLink>
@@ -230,7 +230,7 @@
           <ul v-show="openSections.contact" class="pl-6 mt-1 space-y-1">
             <li>
               <NuxtLink
-                to="/admin/autre/contactList"
+                to="/admin/other/contact-list"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
               >
                 📋 Messages de contact
@@ -238,7 +238,7 @@
             </li>
             <li>
               <NuxtLink
-                to="/admin/autre/NewsLetter"
+                to="/admin/other/NewsLetter"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
               >
                 📋 Abonnés à la newsletter
@@ -249,26 +249,12 @@
 
         <hr class="border-red-800 my-2" />
 
-        <!-- Commandes -->
-        <li>
-          <NuxtLink
-            to="/admin/orders"
-            class="flex items-center p-3 rounded-lg hover:bg-red-700 transition-colors group"
-            :class="$route.path === '/admin/orders' ? 'bg-red-700' : ''"
-          >
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <span>Commandes</span>
-          </NuxtLink>
-        </li>
-
-        <hr class="border-red-800 my-2" />
+        
 
         <!-- Clients -->
-        <li>
+       <!-- <li>
           <NuxtLink
-            to="/admin/clients"
+            to="/admin/user"
             class="flex items-center p-3 rounded-lg hover:bg-red-700 transition-colors group"
             :class="$route.path === '/admin/clients' ? 'bg-red-700' : ''"
           >
@@ -277,9 +263,9 @@
             </svg>
             <span>Clients</span>
           </NuxtLink>
-        </li>
+        </li>--
 
-        <hr class="border-red-800 my-2" />
+        <hr class="border-red-800 my-2" />-->
 
         <!-- Utilisateurs (nouveau dossier en bas) -->
         <li>
@@ -305,18 +291,18 @@
           <ul v-show="openSections.users" class="pl-6 mt-1 space-y-1">
             <li>
               <NuxtLink
-                to="/admin/users"
+                to="/admin/user/"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/users' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/user/' ? 'bg-red-600' : ''"
               >
-                👥 Liste des utilisateurs
+                👥 utilisateurs
               </NuxtLink>
             </li>
             <li>
               <NuxtLink
-                to="/admin/roles"
+                to="/admin/user/roles"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/roles' ? 'bg-red-600' : ''"
+                :class="$route.path === '/admin/user/roles' ? 'bg-red-600' : ''"
               >
                 🔐 Gestion des rôles
               </NuxtLink>

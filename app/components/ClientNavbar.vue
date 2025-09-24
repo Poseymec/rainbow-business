@@ -71,7 +71,7 @@ const navItems = computed(() => [
   { to: '/about', label: t('about') },
   { to: '/services', label: t('services') },
   { to: '/contact', label: t('contact') },
-  { to: '/product', label: t('product') }
+  { to: 'product/', label: t('product') }
 ])
 </script>
 

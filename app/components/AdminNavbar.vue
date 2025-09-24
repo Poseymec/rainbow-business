@@ -33,7 +33,7 @@
           🏠 Accueil client
         </NuxtLink>
         <NuxtLink
-          to="/products"
+          to="/product/"
           class="text-sm font-medium text-gray-700 hover:text-[#E8192C] dark:text-gray-300 dark:hover:text-[#E8192C]"
         >
           🛍️ Boutique

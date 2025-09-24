@@ -103,7 +103,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import contact from './clients/contact.vue'
+//import contact from './clients/contact.vue'
 
 // Images du carousel (remplace par tes propres URLs)
 const images = ref([
