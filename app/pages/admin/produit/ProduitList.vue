@@ -1,58 +1,14 @@
-<!-- app/components/admin/ProductList.vue -->
 <script setup>
 import { ref, computed } from 'vue'
+
 definePageMeta({
-    layout: 'admin'
+  layout: 'admin'
 })
+
 const products = ref([
-  {
-    id: 1,
-    rank: 1,
-    name: 'Imprimante Laser Pro X500',
-    category: 'Imprimantes',
-    price: 299.99,
-    status: 'active'
-  },
-  {
-    id: 2,
-    rank: 2,
-    name: 'Scanner Documentaire',
-    category: 'Scanners',
-    price: 189.50,
-    status: 'inactive'
-  },
-  {
-    id: 1,
-    rank: 1,
-    name: 'Imprimante Laser Pro X500',
-    category: 'Imprimantes',
-    price: 299.99,
-    status: 'active'
-  },
-  {
-    id: 1,
-    rank: 1,
-    name: 'Imprimante Laser Pro X500',
-    category: 'Imprimantes',
-    price: 299.99,
-    status: 'active'
-  },
-  {
-    id: 1,
-    rank: 1,
-    name: 'Imprimante Laser Pro X500',
-    category: 'Imprimantes',
-    price: 299.99,
-    status: 'active'
-  },
-  {
-    id: 1,
-    rank: 1,
-    name: 'Imprimante Laser Pro X500',
-    category: 'Imprimantes',
-    price: 299.99,
-    status: 'active'
-  },
+  { id: 1, rank: 1, name: 'Imprimante Laser Pro X500', category: 'Imprimantes', price: 299.99, status: 'active' },
+  { id: 2, rank: 2, name: 'Scanner Documentaire', category: 'Scanners', price: 189.50, status: 'inactive' },
+  { id: 3, rank: 3, name: 'Photocopieur A3', category: 'Photocopieurs', price: 499.99, status: 'active' }
 ])
 
 const searchTerm = ref('')
@@ -70,8 +26,9 @@ const toggleStatus = (product) => {
   product.status = product.status === 'active' ? 'inactive' : 'active'
 }
 
-const confirmDelete = (product) => {
-  if (confirm(`Supprimer "${product.name}" ?`)) {
+// --- Suppression avec popup ---
+const deleteProduct = (product) => {
+  if (confirm(`Voulez-vous vraiment supprimer "${product.name}" ?`)) {
     products.value = products.value.filter(p => p.id !== product.id)
   }
 }
@@ -169,7 +126,7 @@ const confirmDelete = (product) => {
               {{ product.status === 'active' ? '🔴' : '🟢' }}
             </button>
             <button
-              @click="confirmDelete(product)"
+              @click="deleteProduct(product)"
               class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
             >
               🗑️
