@@ -1,15 +1,6 @@
 <!-- app/pages/admin/users/index.vue -->
 <template>
   <div class="p-4">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-      <h1 class="text-xl md:text-2xl font-bold text-red-600">Utilisateurs</h1>
-      <NuxtLink
-        to="/admin/users/create"
-        class="mt-3 sm:mt-0 px-4 py-2 bg-[#E8192C] text-white text-sm font-medium rounded-lg hover:bg-red-700"
-      >
-        ➕ Ajouter
-      </NuxtLink>
-    </div>
 
     <!-- Recherche -->
     <div class="mb-6">
@@ -44,8 +35,8 @@
           </span>
         </div>
         <div class="mt-3 flex gap-2">
-          <NuxtLink :to="`/admin/users/${user.id}`" class="px-2 py-1 bg-blue-600 text-white text-xs rounded">👁️</NuxtLink>
-          <NuxtLink :to="`/admin/users/${user.id}/edit`" class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">✏️</NuxtLink>
+         <NuxtLink :to="`/admin/users/${user.id}`" class="px-2 py-1 bg-blue-600 text-white text-xs rounded">👁️</NuxtLink>
+          <NuxtLink :to="`/admin/user/${user.id}/edit`" class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">✏️</NuxtLink>
           <button @click="toggleStatus(user)" class="px-2 py-1 bg-gray-600 text-white text-xs rounded">
             {{ user.status === 'active' ? '🔴' : '🟢' }}
           </button>
@@ -83,8 +74,8 @@
               </span>
             </td>
             <td class="px-4 py-4 text-sm space-x-2">
-              <NuxtLink :to="`/admin/users/${user.id}`" class="px-2 py-1 bg-blue-600 text-white text-xs rounded">👁️</NuxtLink>
-              <NuxtLink :to="`/admin/users/${user.id}/edit`" class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">✏️</NuxtLink>
+             <NuxtLink :to="`/admin/user/${user.id}`" class="px-2 py-1 bg-blue-600 text-white text-xs rounded">👁️</NuxtLink>
+              <NuxtLink :to="`/admin/user/${user.id}/edit`" class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">✏️</NuxtLink>
               <button @click="toggleStatus(user)" class="px-2 py-1 bg-gray-600 text-white text-xs rounded">
                 {{ user.status === 'active' ? '🔴' : '🟢' }}
               </button>

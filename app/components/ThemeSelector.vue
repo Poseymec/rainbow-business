@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-const theme = ref("light");
+// Valeur par défaut : 'dark'
+const theme = ref("dark");
 
 const applyTheme = (value) => {
   if (value === "light") {
@@ -13,9 +14,13 @@ const applyTheme = (value) => {
 };
 
 onMounted(() => {
+  // Récupère le thème sauvegardé, sinon utilise 'dark' par défaut
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme) {
     theme.value = savedTheme;
+  } else {
+    // Assure-toi que le thème par défaut est appliqué au premier chargement
+    theme.value = "dark";
   }
   applyTheme(theme.value);
 });

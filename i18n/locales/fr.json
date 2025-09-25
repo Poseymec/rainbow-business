@@ -1,8 +1,48 @@
 {
-  "home": "Accueil",
+  "home-nav": "Accueil",
   "about": "À propos",
   "services": "Services",
   "contact": "Contact",
   "login": "Connexion",
-  "product": "Produit"
+  "product": "Produit",
+
+  "home": {
+    "logo_alt": "Logo Rainbow Business",
+    "title": "RAINBOW BUSINESS & CONSULTING",
+    "description": "Nous mettons à votre disposition une large gamme de produits de qualité allant des articles pour l’hygiène et l’entretien aux produits pratiques pour la maison et la restauration.",
+    "cta_button": "Contactez-nous",
+    "carousel_title": "Découvrez nos produits",
+    "go_to_slide": "Aller à la diapositive {index}",
+    "prev_slide": "Diapositive précédente",
+    "next_slide": "Diapositive suivante"
+  },
+
+  "about_page": {
+    "title": "À propos de Rainbow Business",
+    "founded": "Fondée en 2011",
+    "description": "Rainbow Business est une entreprise camerounaise qui met à votre disposition une large gamme de produits de qualité allant des articles pour l’hygiène et l’entretien aux produits pratiques pour la maison et la restauration.",
+    "distribution": {
+      "title": "Distribution & Vente",
+      "text": "Nous proposons une large gamme de produits de qualité (papier aluminium, film alimentaire, cirage, fil dentaire, etc.), disponibles pour particuliers, distributeurs et entreprises."
+    },
+    "custom": {
+      "title": "Approvisionnement sur mesure",
+      "text": "Commandes en gros adaptées aux besoins spécifiques des hôtels, restaurants, supermarchés, pharmacies."
+    }
+  },
+  "services_page": {
+    "title": "Nos services",
+    "distribution": {
+      "title": "Distribution & Vente",
+      "description": "Une large gamme de produits de qualité pour particuliers, distributeurs et entreprises."
+    },
+    "custom_supply": {
+      "title": "Approvisionnement sur mesure",
+      "description": "Solutions en gros pour hôtels, restaurants, supermarchés et pharmacies."
+    },
+    "quality": {
+      "title": "Qualité garantie",
+      "description": "Produits rigoureusement sélectionnés pour répondre aux normes les plus élevées."
+    }
+  }
 }

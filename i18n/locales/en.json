@@ -1,8 +1,48 @@
 {
-  "home": "Home",
+  "home-nav": "Home",
   "about": "About",
   "services": "Services",
   "contact": "Contact",
   "login": "Login",
-  "product": "Product"
+  "product": "Product",
+
+  "home": {
+    "logo_alt": "Rainbow Business Logo",
+    "title":"RAINBOW BUSINESS & CONSULTING" ,
+    "description": "We offer you a wide range of high-quality products, from hygiene and cleaning supplies to practical items for home and food service.",
+    "cta_button": "Contact us",
+    "carousel_title": "Discover our products",
+    "go_to_slide": "Go to slide {index}",
+    "prev_slide": "Previous slide",
+    "next_slide": "Next slide"
+  },
+
+  "about_page": {
+    "title": "About Rainbow Business",
+    "founded": "Founded in 2011",
+    "description": "Rainbow Business is a Cameroonian company offering a wide range of high-quality products, from hygiene and cleaning supplies to practical items for home and food service.",
+    "distribution": {
+      "title": "Distribution & Sales",
+      "text": "We offer a wide range of quality products (aluminum foil, cling film, shoe polish, dental floss, etc.), available to individuals, distributors, and businesses."
+    },
+    "custom": {
+      "title": "Custom Supply",
+      "text": "Bulk orders tailored to the specific needs of hotels, restaurants, supermarkets, and pharmacies."
+    }
+  },
+  "services_page": {
+    "title": "Our Services",
+    "distribution": {
+      "title": "Distribution & Sales",
+      "description": "A wide range of quality products for individuals, distributors, and businesses."
+    },
+    "custom_supply": {
+      "title": "Custom Supply",
+      "description": "Bulk solutions for hotels, restaurants, supermarkets, and pharmacies."
+    },
+    "quality": {
+      "title": "Guaranteed Quality",
+      "description": "Products rigorously selected to meet the highest standards."
+    }
+  }
 }

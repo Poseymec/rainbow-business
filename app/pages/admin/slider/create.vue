@@ -1,7 +1,7 @@
 <!-- app/pages/admin/sliders/create.vue -->
 <template>
   <div class="max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold text-RED-600  mb-6">Ajouter un slider</h1>
+    <h1 class="text-2xl font-bold text-red-600  mb-6">Ajouter un slider</h1>
 
     <form @submit.prevent="submit" class="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
       <!-- Nom -->
@@ -67,7 +67,7 @@
           Enregistrer le slider
         </button>
         <NuxtLink
-          to="/admin/sliders"
+          to="/admin/slider/"
           class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           Annuler

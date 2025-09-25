@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="bg-white/95 backdrop-blur border-b border-gray-200/40 dark:bg-gray-900/95 dark:border-gray-700/40 fixed top-4 left-4 right-4 z-50 rounded-2xl shadow-md shadow-black/25 dark:shadow-black/70 transition-all duration-300"
+    class="bg-white/50 backdrop-blur border-b border-gray-200/40 dark:bg-gray-900/50 dark:border-gray-700/40 fixed top-4 left-4 right-4 z-50 rounded-2xl shadow-md shadow-black/25 dark:shadow-black/70 transition-all duration-300"
   >
     <div class="max-w-screen-xl mx-auto px-3 py-2 flex items-center justify-between">
       <!-- Logo élégant -->
@@ -22,7 +22,7 @@
         id="navbar-mobile"
       >
         <ul
-          class="flex flex-col md:flex-row justify-center items-center md:space-x-4 font-medium p-2 md:p-0 rounded-xl bg-gray-50/95 backdrop-blur-md md:bg-transparent dark:bg-gray-800/95 md:dark:bg-transparent border border-gray-100/40 md:border-0 dark:border-gray-700/40 w-full md:w-auto"
+          class="flex flex-col md:flex-row justify-center items-center md:space-x-4 font-medium p-2 md:p-0 rounded-xl bg-gray-50/95 backdrop-blur-md md:bg-transparent dark:bg-gray-800/50 md:dark:bg-transparent border border-gray-100/40 md:border-0 dark:border-gray-700/40 w-full md:w-auto"
         >
           <li v-for="item in navItems" :key="item.to" class="w-full md:w-auto">
             <NuxtLink
@@ -67,7 +67,7 @@ const { t } = useI18n()
 const isMenuOpen = ref(false)
 
 const navItems = computed(() => [
-  { to: '/', label: t('home') },
+  { to: '/', label: t('home-nav') },
   { to: '/about', label: t('about') },
   { to: '/services', label: t('services') },
   { to: '/contact', label: t('contact') },

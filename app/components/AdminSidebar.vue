@@ -251,64 +251,59 @@
 
         
 
-        <!-- Clients -->
-       <!-- <li>
+        <!-- role -->
+        <li>
           <NuxtLink
-            to="/admin/user"
+            to="/admin/role/"
             class="flex items-center p-3 rounded-lg hover:bg-red-700 transition-colors group"
-            :class="$route.path === '/admin/clients' ? 'bg-red-700' : ''"
+            :class="$route.path === '/admin/role/' ? 'bg-red-700' : ''"
           >
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <span>Clients</span>
+           <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               stroke-width="2"
+               d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+               />
+              </svg>
+            <span>Role</span>
           </NuxtLink>
-        </li>--
-
-        <hr class="border-red-800 my-2" />-->
+        </li>
+        <hr class="border-red-800 my-2" />
 
         <!-- Utilisateurs (nouveau dossier en bas) -->
-        <li>
-          <button
-            type="button"
-            class="flex items-center w-full p-3 text-left rounded-lg hover:bg-red-700 transition-colors group"
-            @click="toggleSection('users')"
+     <li>
+          <NuxtLink
+            to="/admin/user/"
+            class="flex items-center p-2 rounded hover:bg-red-600 transition-colors"
+            :class="$route.path === '/admin/user/' ? 'bg-red-600' : ''"
           >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
             <span>Utilisateurs</span>
-            <svg
-              class="w-4 h-4 ml-auto transition-transform"
-              :class="{ 'rotate-180': openSections.users }"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <ul v-show="openSections.users" class="pl-6 mt-1 space-y-1">
-            <li>
-              <NuxtLink
-                to="/admin/user/"
-                class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/user/' ? 'bg-red-600' : ''"
-              >
-                👥 utilisateurs
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink
-                to="/admin/user/roles"
-                class="block p-2 rounded hover:bg-red-600 transition-colors"
-                :class="$route.path === '/admin/user/roles' ? 'bg-red-600' : ''"
-              >
-                🔐 Gestion des rôles
-              </NuxtLink>
-            </li>
-          </ul>
+          </NuxtLink>
         </li>
+
+        <hr class="border-red-800 my-2" />
+
+        <li>
+          <NuxtLink
+            to="/admin/logout"
+            class="flex items-center p-2 rounded hover:bg-red-600 transition-colors"
+          >
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            <span>Log out</span>
+          </NuxtLink>
+        </li>
+
       </ul>
     </div>
   </aside>

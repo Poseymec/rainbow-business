@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300">
+  <div class="min-h-screen flex flex-col bg-gray-200  dark:bg-gray-800/70 transition-colors duration-300">
     <!-- Navbar globale -->
     <ClientNavbar />
 

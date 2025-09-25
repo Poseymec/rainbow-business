@@ -4,7 +4,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
       <h1 class="text-xl md:text-2xl font-bold text-red-600">Rôles</h1>
       <NuxtLink
-        to="/admin/roles/create"
+        to="/admin/role/create"
         class="mt-3 sm:mt-0 px-4 py-2 bg-[#E8192C] text-white text-sm font-medium rounded-lg hover:bg-red-700"
       >
         ➕ Ajouter
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="mt-3 flex gap-2">
-          <NuxtLink :to="`/admin/roles/${role.id}/edit`" class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">✏️ Modifier</NuxtLink>
+          <NuxtLink :to="`/admin/rols/${role.id}/edit`" class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">✏️ Modifier</NuxtLink>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
               </div>
             </td>
             <td class="px-4 py-4 text-sm">
-              <NuxtLink :to="`/admin/roles/${role.id}/edit`" class="px-3 py-1 bg-yellow-600 text-white text-xs rounded">✏️</NuxtLink>
+              <NuxtLink :to="`/admin/user/role/${role.id}`" class="px-3 py-1 bg-yellow-600 text-white text-xs rounded">✏️</NuxtLink>
             </td>
           </tr>
         </tbody>
