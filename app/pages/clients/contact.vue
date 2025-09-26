@@ -7,7 +7,7 @@
         <!-- 📱 Mobile : Newsletter en haut -->
         <div class="lg:hidden mb-12">
           <div>
-            <h3 class="mb-6 text-3xl font-bold text-center text-red-600 dark:text-red-400">
+            <h3 class="mb-6 text-3xl font-bold text-center text-[#E8192C] dark:text-red-400">
               Restez informé(e) 📩
             </h3>
             <p class="mb-8 text-center text-gray-900 dark:text-gray-300 text-lg">
@@ -15,7 +15,7 @@
             </p>
             <form @submit.prevent="submitNewsletter" class="space-y-6 max-w-md mx-auto">
               <div>
-                <label for="newsletter-email" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="newsletter-email" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre email *
                 </label>
                 <input
@@ -28,7 +28,7 @@
                 />
               </div>
               <div>
-                <label for="newsletter-phone" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="newsletter-phone" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre téléphone (optionnel)
                 </label>
                 <input
@@ -53,7 +53,7 @@
         <div class="hidden lg:grid lg:grid-cols-2 lg:gap-10">
           <!-- Formulaire de contact -->
           <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-center text-red-600 dark:text-red-400">
+            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-center text-[#E8192C] dark:text-red-400">
               Contactez-nous
             </h2>
             <p class="mb-8 text-center text-gray-900 dark:text-gray-300 text-lg">
@@ -61,7 +61,7 @@
             </p>
             <form @submit.prevent="submitContact" class="space-y-6">
               <div>
-                <label for="name" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="name" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre nom *
                 </label>
                 <input
@@ -74,7 +74,7 @@
                 />
               </div>
               <div>
-                <label for="email" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="email" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre email *
                 </label>
                 <input
@@ -87,7 +87,7 @@
                 />
               </div>
               <div>
-                <label for="phone" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="phone" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre téléphone
                 </label>
                 <input
@@ -99,7 +99,7 @@
                 />
               </div>
               <div>
-                <label for="message" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="message" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre message *
                 </label>
                 <textarea
@@ -122,7 +122,7 @@
 
           <!-- Newsletter -->
           <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <h3 class="mb-6 text-3xl font-bold text-center text-red-600 dark:text-red-400">
+            <h3 class="mb-6 text-3xl font-bold text-center text-[#E8192C] dark:text-red-400">
               Restez informé(e) 📩
             </h3>
             <p class="mb-8 text-center text-gray-900 dark:text-gray-300 text-lg">
@@ -130,7 +130,7 @@
             </p>
             <form @submit.prevent="submitNewsletter" class="space-y-6 max-w-md mx-auto">
               <div>
-                <label for="newsletter-email-desktop" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="newsletter-email-desktop" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre email *
                 </label>
                 <input
@@ -143,7 +143,7 @@
                 />
               </div>
               <div>
-                <label for="newsletter-phone-desktop" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="newsletter-phone-desktop" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre téléphone (optionnel)
                 </label>
                 <input
@@ -167,7 +167,7 @@
         <!-- 📱 Mobile : Formulaire de contact en bas -->
         <div class="lg:hidden mt-12">
           <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-center text-red-600 dark:text-red-400">
+            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-center text-[#E8192C] dark:text-red-400">
               Contactez-nous
             </h2>
             <p class="mb-8 text-center text-gray-900 dark:text-gray-300 text-lg">
@@ -175,7 +175,7 @@
             </p>
             <form @submit.prevent="submitContact" class="space-y-6">
               <div>
-                <label for="name-mobile" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="name-mobile" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre nom *
                 </label>
                 <input
@@ -188,7 +188,7 @@
                 />
               </div>
               <div>
-                <label for="email-mobile" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="email-mobile" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre email *
                 </label>
                 <input
@@ -201,7 +201,7 @@
                 />
               </div>
               <div>
-                <label for="phone-mobile" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="phone-mobile" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre téléphone
                 </label>
                 <input
@@ -213,7 +213,7 @@
                 />
               </div>
               <div>
-                <label for="message-mobile" class="block mb-3 text-lg font-medium text-red-600 dark:text-red-400">
+                <label for="message-mobile" class="block mb-3 text-lg font-medium text-[#E8192C] dark:text-red-400">
                   Votre message *
                 </label>
                 <textarea
