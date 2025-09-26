@@ -1,21 +1,15 @@
+
 <template>
   <nav
     class="bg-white/50 backdrop-blur border-b border-gray-200/40 dark:bg-gray-900/50 dark:border-gray-700/40 fixed top-4 left-4 right-4 z-50 rounded-2xl shadow-md shadow-black/25 dark:shadow-black/70 transition-all duration-300"
   >
     <div class="max-w-screen-xl mx-auto px-3 py-2 flex items-center justify-between">
-      <!-- Logo élégant -->
+      <!-- Logo -->
       <NuxtLink to="/" class="flex items-center space-x-2 rtl:space-x-reverse z-10">
-        <img
-          src="/images/logo.png"
-          class="h-15"
-          alt="Logo"
-        />
-       <!-- <span class="text-2XL font-medium whitespace-nowrap dark:text-red-500 tracking-tight">
-          RBC
-        </span>-->
+        <img src="/images/logo.png" class="h-15" alt="Logo" />
       </NuxtLink>
 
-      <!-- Menu CENTRÉ — version élégante -->
+      <!-- Menu -->
       <div
         :class="{ 'hidden': !isMenuOpen }"
         class="absolute left-1/2 top-full -translate-x-1/2 pt-2 w-full md:static md:block md:pt-0 md:translate-x-0 md:w-auto md:left-0 transition-all duration-300 ease-in-out z-40 md:z-auto"
@@ -27,8 +21,10 @@
           <li v-for="item in navItems" :key="item.to" class="w-full md:w-auto">
             <NuxtLink
               :to="item.to"
-              class="block py-2 px-3 rounded-lg hover:bg-gray-100/70 md:hover:bg-transparent md:hover:text-red-600 dark:text-gray-200 md:dark:hover:text-red-400 dark:hover:bg-gray-700/70 dark:hover:text-white md:dark:hover:bg-transparent transition-colors duration-200 text-center w-full text-sm font-medium"
-              active-class="text-red-600 dark:text-red-400"
+              :class="[
+                'block py-2 px-3 rounded-lg hover:bg-gray-100/70 md:hover:bg-transparent md:hover:text-red-600 dark:text-gray-200 md:dark:hover:text-red-400 dark:hover:bg-gray-700/70 dark:hover:text-white md:dark:hover:bg-transparent transition-colors duration-200 text-center w-full text-sm font-medium',
+                isItemActive(item) ? 'text-red-600 dark:text-red-400' : ''
+              ]"
               @click="isMenuOpen = false"
             >
               {{ item.label }}
@@ -37,7 +33,7 @@
         </ul>
       </div>
 
-      <!-- Contrôles TOUJOURS visibles + Hamburger -->
+      <!-- Contrôles -->
       <div class="flex items-center gap-2 z-10">
         <LocaleSelector class="text-sm" />
         <ThemeSelector class="text-sm" />
@@ -48,8 +44,8 @@
           aria-label="Toggle main menu"
         >
           <span class="sr-only">Menu</span>
-            <IconMenu2 v-if="!isMenuOpen" class="w-5 h-5" />
-            <IconX v-else class="w-5 h-5" />
+          <IconMenu2 v-if="!isMenuOpen" class="w-5 h-5" />
+          <IconX v-else class="w-5 h-5" />
         </button>
       </div>
     </div>
@@ -57,68 +53,83 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute } from 'vue-router' // ⚠️ Important : 'vue-router', pas '#imports' pour useRoute
 import { useI18n } from 'vue-i18n'
 import LocaleSelector from '~/components/LocaleSelector.vue'
 import ThemeSelector from '~/components/ThemeSelector.vue'
 import { IconMenu2, IconX } from '@tabler/icons-vue'
 
 const { t } = useI18n()
+const route = useRoute()
 const isMenuOpen = ref(false)
+const activeSection = ref('hero') // pour le scrollspy
 
+// Liste des items de navigation
 const navItems = computed(() => [
-  { to: '/', label: t('home-nav') },
-  { to: '/about', label: t('about') },
-  { to: '/services', label: t('services') },
-  { to: '/contact', label: t('contact') },
-  { to: 'product/', label: t('product') }
+  { to: '/', label: t('home-nav'), section: 'hero', route: '/' },
+  { to: '/#about', label: t('about'), section: 'about', route: '/' },
+  { to: '/#services', label: t('services'), section: 'services', route: '/' },
+  { to: '/#contact', label: t('contact'), section: 'contact', route: '/' },
+  { to: '/product', label: t('product'), section: null, route: '/product' }
 ])
+
+// Fonction pour savoir si un item est actif
+const isItemActive = (item) => {
+  // Cas 1 : on est sur une page autre que l'accueil → comparaison classique
+  if (route.path !== '/') {
+    return route.path === item.route
+  }
+
+  // Cas 2 : on est sur la page d'accueil → utiliser le scrollspy
+  return activeSection.value === item.section
+}
+
+// --- Scrollspy (uniquement sur /) ---
+const updateActiveSection = () => {
+  if (route.path !== '/') return
+
+  const sections = ['hero', 'about', 'services', 'contact']
+  const scrollPosition = window.scrollY + 100 // offset pour meilleure détection
+
+  for (const id of sections) {
+    const el = document.getElementById(id)
+    if (el) {
+      const top = el.offsetTop
+      const height = el.offsetHeight
+      if (scrollPosition >= top && scrollPosition < top + height) {
+        activeSection.value = id
+        return
+      }
+    }
+  }
+
+  // Si on est tout en haut
+  if (window.scrollY < 100) {
+    activeSection.value = 'hero'
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', updateActiveSection, { passive: true })
+  // Initialisation au chargement
+  setTimeout(updateActiveSection, 150)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', updateActiveSection)
+})
+
+// Réagir aux changements de route (ex: arrivée via /#contact ou /product)
+watch(
+  () => route.fullPath,
+  () => {
+    if (route.path === '/') {
+      // Attendre que Nuxt ait scrollé vers l'ancre
+      setTimeout(updateActiveSection, 300)
+    }
+    // Pas besoin de gérer autre chose : isItemActive() s'adapte
+  },
+  { immediate: true }
+)
 </script>
-
-<style scoped>
-/*nav {
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(12px);
-  animation: fadeInDown 0.3s ease-out;
-}*/
-av {
-  -webkit-backdrop-filter: blur(32px) saturate(120%) brightness(1.5);
-  backdrop-filter: blur(32px) saturate(10%) brightness(1.1);
-  animation: fadeInDown 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-nav a {
-  transition: all 0.2s ease;
-  text-align: center;
-}
-nav a:hover {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-#navbar-mobile {
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>

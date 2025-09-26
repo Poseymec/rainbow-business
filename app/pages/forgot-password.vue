@@ -4,7 +4,7 @@
     <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
       <div>
         <img class="mx-auto h-12 w-auto" src="/images/logo.png" alt="Logo" />
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-[#E8192C]">
           Réinitialiser votre mot de passe
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">

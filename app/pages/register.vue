@@ -4,7 +4,7 @@
     <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
       <div>
         <img class="mx-auto h-12 w-auto" src="/images/logo.png" alt="Logo" />
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-[#E8192C]">
           Créez votre compte
         </h2>
       </div>
@@ -18,7 +18,7 @@
               type="text"
               required
               class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#E8192C] focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-              placeholder="Jean Dupont"
+              placeholder="albert tagni"
             />
           </div>
           <div>

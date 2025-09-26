@@ -94,15 +94,9 @@
     </section>
 
     <!-- Sections dynamiques -->
-    <div id="about">
-       <About /> 
-    </div>
-    <div id="services">
-      <Services />
-    </div>
-    <div id="contact">
-        <Contact />
-      </div>
+    <About />
+    <Services />
+    <Contact />
   </main>
 </template>
 
