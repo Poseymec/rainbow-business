@@ -21,8 +21,8 @@
       <!-- Deux colonnes : Distribution + Approvisionnement -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <!-- Distribution & Vente -->
-        <div class=" dark:bg-[#E8192C] bg-gray-100 dark:text-white text-[#E8192C] p-6 rounded-xl shadow-md border border-gray-200 dark:border-red-500">
-          <h2 class="text-xl font-bold text-[#E8192C] dark:text-white mb-3">
+        <div class=" dark:bg-gray-800 bg-[#E8192C] dark:text-white text-[#E8192C] p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-500">
+          <h2 class="text-xl font-bold dark:text-[#E8192C] text-white mb-3">
             {{ t('about_page.distribution.title') }}
           </h2>
           <p class="text-gray-900 dark:text-white text-lg text-bold">
@@ -31,8 +31,8 @@
         </div>
 
         <!-- Approvisionnement sur mesure -->
-        <div class=" dark:bg-[#E8192C] bg-gray-100 dark:text-white text-[#E8192C] p-6 rounded-xl shadow-md border border-gray-200 dark:border-red-500">
-          <h2 class="text-xl font-bold text-[#E8192C] dark:text-white mb-3">
+        <div class=" bg-[#E8192C] dark:bg-gray-800 dark:text-white text-[#E8192C] p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-500">
+          <h2 class="text-xl font-bold  dark:text-[#E8192C] text-white mb-3">
             {{ t('about_page.custom.title') }}
           </h2>
           <p class="text-gray-900 dark:text-white text-lg text-bold">

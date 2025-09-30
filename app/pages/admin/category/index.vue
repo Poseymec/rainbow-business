@@ -1,6 +1,7 @@
 <!-- app/components/admin/CategoryList.vue -->
 <script setup>
 import { ref, computed } from 'vue'
+import{Icon} from '@iconify/vue'
 definePageMeta({
     layout: 'admin'
 })
@@ -33,10 +34,10 @@ const confirmDelete = (category) => {
 </script>
 
 <template>
-  <!-- 🔷 Entête -->
+  <!-- 🔷 En-tête -->
   <div class="mb-6">
-    <h1 class="text-2xl font-bold text-red-600">Catégories</h1>
-    <div class="mt-4 flex flex-col sm:flex-row gap-4">
+    <h1 class="text-2xl font-bold text-red-600 dark:text-red-400">Catégories</h1>
+    <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
       <input
         v-model="searchTerm"
         type="text"
@@ -61,21 +62,21 @@ const confirmDelete = (category) => {
   </div>
 
   <!-- 🔷 Tableau -->
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto rounded-lg shadow-sm">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
         <tr>
           <th scope="col" class="px-4 py-3">#</th>
           <th scope="col" class="px-4 py-3">Nom</th>
           <th scope="col" class="px-4 py-3">Statut</th>
-          <th scope="col" class="px-4 py-3">Actions</th>
+          <th scope="col" class="px-4 py-3 text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="category in filteredCategories"
           :key="category.id"
-          class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
+          class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
         >
           <td class="px-4 py-3">{{ category.rank }}</td>
           <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
@@ -93,30 +94,56 @@ const confirmDelete = (category) => {
               {{ category.status === 'active' ? 'Actif' : 'Inactif' }}
             </span>
           </td>
-          <td class="px-4 py-3 space-x-1 whitespace-nowrap">
-           
+          <td class="px-4 py-3 flex gap-2 justify-center">
+            <!-- Bouton Éditer -->
             <NuxtLink
               :to="`/admin/category/${category.id}/edit`"
-              class="px-2 py-1 bg-yellow-600 text-white rounded text-xs hover:bg-yellow-700"
+              class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              title="Éditer"
             >
-              ✏️
+              <Icon
+                icon="mdi:pencil"
+                width="20"
+                class="text-yellow-500 hover:text-yellow-600"
+              />
             </NuxtLink>
+
+            <!-- Bouton Changer de statut -->
             <button
               @click="toggleStatus(category)"
               :class="[
-                'px-2 py-1 text-white text-xs rounded',
+                'p-2 rounded-lg transition-colors',
                 category.status === 'active'
-                  ? 'bg-red-600 hover:bg-red-700'
-                  : 'bg-green-600 hover:bg-green-700'
+                  ? 'hover:bg-red-100 dark:hover:bg-red-900/30'
+                  : 'hover:bg-green-100 dark:hover:bg-green-900/30'
               ]"
+              :title="category.status === 'active' ? 'Désactiver' : 'Activer'"
             >
-              {{ category.status === 'active' ? '🔴' : '🟢' }}
+              <Icon
+                v-if="category.status === 'active'"
+                icon="mdi:close-circle"
+                width="20"
+                class="text-red-500"
+              />
+              <Icon
+                v-else
+                icon="mdi:check-circle"
+                width="20"
+                class="text-green-500"
+              />
             </button>
+
+            <!-- Bouton Supprimer -->
             <button
               @click="confirmDelete(category)"
-              class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
+              class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              title="Supprimer"
             >
-              🗑️
+              <Icon
+                icon="mdi:delete"
+                width="20"
+                class="text-red-500 hover:text-red-600"
+              />
             </button>
           </td>
         </tr>

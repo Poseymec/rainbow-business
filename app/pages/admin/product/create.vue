@@ -4,16 +4,28 @@
     <h1 class="text-2xl font-bold text-red-600 mb-6">Ajouter un produit</h1>
 
     <form @submit.prevent="submit" class="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-      <!-- Nom -->
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nom *</label>
-        <input
-          id="name"
-          v-model="form.name"
-          type="text"
-          required
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C]"
-        />
+      <!-- Nom (FR / EN) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="name_fr" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nom (Français) *</label>
+          <input
+            id="name_fr"
+            v-model="form.name.fr"
+            type="text"
+            required
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C]"
+          />
+        </div>
+        <div>
+          <label for="name_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nom (Anglais) *</label>
+          <input
+            id="name_en"
+            v-model="form.name.en"
+            type="text"
+            required
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C]"
+          />
+        </div>
       </div>
 
       <!-- Catégorie -->
@@ -32,22 +44,44 @@
         </select>
       </div>
 
-      <!-- Description 1 & 2 -->
+      <!-- Description courte (FR / EN) -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label for="description1" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description courte</label>
+          <label for="description1_fr" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description courte (Français)</label>
           <textarea
-            id="description1"
-            v-model="form.description1"
+            id="description1_fr"
+            v-model="form.description1.fr"
             rows="3"
             class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C]"
           ></textarea>
         </div>
         <div>
-          <label for="description2" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description longue</label>
+          <label for="description1_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description courte (Anglais)</label>
           <textarea
-            id="description2"
-            v-model="form.description2"
+            id="description1_en"
+            v-model="form.description1.en"
+            rows="3"
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C]"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Description longue (FR / EN) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="description2_fr" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description longue (Français)</label>
+          <textarea
+            id="description2_fr"
+            v-model="form.description2.fr"
+            rows="3"
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C]"
+          ></textarea>
+        </div>
+        <div>
+          <label for="description2_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description longue (Anglais)</label>
+          <textarea
+            id="description2_en"
+            v-model="form.description2.en"
             rows="3"
             class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C]"
           ></textarea>
@@ -134,10 +168,19 @@ const categories = [
 ]
 
 const form = reactive({
-  name: '',
+  name: {
+    fr: '',
+    en: ''
+  },
   categorie_id: null,
-  description1: '',
-  description2: '',
+  description1: {
+    fr: '',
+    en: ''
+  },
+  description2: {
+    fr: '',
+    en: ''
+  },
   prix: null,
   status: 'active',
   images: []
@@ -149,7 +192,7 @@ const handleImageUpload = (event) => {
 }
 
 const submit = () => {
-  if (!form.name || !form.categorie_id || !form.prix) {
+  if (!form.name.fr || !form.name.en || !form.categorie_id || !form.prix) {
     alert('Veuillez remplir tous les champs obligatoires.')
     return
   }

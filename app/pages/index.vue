@@ -13,7 +13,7 @@
         </div>
 
         <!-- Titre -->
-        <h1 class="text-3xl md:text-4xl lg:text-6xl font-extrabold bg-gradient-to-r from-[#E8192C] to-[#E8192C] bg-clip-text text-transparent mb-6">
+        <h1 class="text-3xl md:text-4xl lg:text-6xl font-extrabold text-[#E8192C]   mb-6">
           {{ $t('home.title') }}
         </h1>
 
@@ -25,7 +25,7 @@
         <!-- Bouton CTA -->
         <NuxtLink
           to="/contact"
-          class="inline-block px-6 py-3 bg-gradient-to-r from-[#E8192C] to-[#E8192C] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+          class="inline-block px-6 py-3 bg-[#E8192C] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
         >
           {{ $t('home.cta_button') }}
         </NuxtLink>

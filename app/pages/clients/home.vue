@@ -2,7 +2,7 @@
   <main class="pt-5 pb-20 px-4 md:px-8 ">
     <!-- Section Héro -->
     <section class="max-w-4xl mx-auto text-center mb-24">
-      <div class="bg-transparent backdrop-blur-sm rounded-2xl px-6 py-12">
+      <div class=" rounded-2xl px-6 py-12">
         <!-- Logo -->
         <div class="mb-4 floating-div">
           <img
@@ -13,7 +13,7 @@
         </div>
 
         <!-- Titre -->
-        <h1 class="text-3xl md:text-4xl lg:text-6xl font-extrabold bg-gradient-to-r from-[#E8192C] to-[#E8192C] bg-clip-text text-transparent mb-6">
+        <h1 class="text-3xl md:text-2xl lg:text-6xl font-extrabold  mb-6">
           {{ $t('home.title') }}
         </h1>
 

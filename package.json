@@ -10,10 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify/vue": "^5.0.0",
     "@nuxt/content": "3.7.1",
     "@nuxt/eslint": "1.9.0",
     "@nuxt/image": "1.11.0",
     "@nuxtjs/i18n": "^10.1.0",
+    "@pinia/nuxt": "^0.11.2",
     "@tabler/icons-vue": "^3.35.0",
     "@tailwindcss/vite": "^4.1.13",
     "better-sqlite3": "^12.2.0",
@@ -25,7 +27,6 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "nuxt-icon": "^1.0.0-beta.7",
     "tailwindcss": "^4.1.13",
     "vite-tsconfig-paths": "^5.1.4"
   }
