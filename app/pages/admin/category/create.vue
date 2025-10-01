@@ -1,4 +1,3 @@
-<!-- app/pages/admin/categories/create.vue -->
 <template>
   <div class="max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold text-red-600 mb-6">Ajouter une catégorie</h1>
@@ -31,9 +30,10 @@
       <div class="flex gap-3">
         <button
           type="submit"
-          class="px-6 py-2 bg-[#E8192C] text-white font-medium rounded-lg hover:bg-red-700 transition-colors"
+          :disabled="loading"
+          class="px-6 py-2 bg-[#E8192C] text-white font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-70"
         >
-          Enregistrer
+          {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
         </button>
         <NuxtLink
           to="/admin/category/"
@@ -48,10 +48,15 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useCategoryStore } from '~/stores/categoryStore'
 
 definePageMeta({
-    layout: 'admin'
+  layout: 'admin'
 })
+
+const router = useRouter()
+const categoryStore = useCategoryStore()
 
 const form = reactive({
   name: {
@@ -60,13 +65,23 @@ const form = reactive({
   }
 })
 
-const submit = () => {
+const loading = ref(false)
+
+const submit = async () => {
   if (!form.name.fr || !form.name.en) {
     alert('Veuillez remplir les noms en français et en anglais.')
     return
   }
-  // À connecter à ton API
-  console.log('Nouvelle catégorie:', form)
-  alert('Catégorie ajoutée avec succès !')
+
+  loading.value = true
+  try {
+    await categoryStore.createCategory(form)
+    alert('Catégorie ajoutée avec succès !')
+    router.push('/admin/category/')
+  } catch (err) {
+    alert('Erreur : ' + (err.message || 'Impossible d’ajouter la catégorie.'))
+  } finally {
+    loading.value = false
+  }
 }
 </script>

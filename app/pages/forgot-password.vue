@@ -46,21 +46,22 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '~/stores/authStore'
 
-const form = reactive({
-  email: ''
-})
+definePageMeta({ layout: 'auth' })
 
-const sendResetLink = () => {
-  if (!form.email) {
-    alert('Veuillez entrer votre email.')
-    return
+const authStore = useAuthStore()
+const router = useRouter()
+const form = reactive({ email: '' })
+
+const sendResetLink = async () => {
+  try {
+    await authStore.forgotPassword(form.email)
+    alert('Un lien de réinitialisation a été envoyé à votre email.')
+    router.push('/login')
+  } catch (err) {
+    alert('Erreur : ' + authStore.error)
   }
-  console.log('Lien de réinitialisation envoyé à:', form.email)
-  alert('Un lien de réinitialisation a été envoyé à votre email.')
-  // À connecter à ton API (ex: /api/forgot-password)
 }
-definePageMeta({
-    layout: 'auth'
-})
 </script>

@@ -80,7 +80,13 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '~/stores/authStore'
 
+definePageMeta({ layout: 'auth' })
+
+const authStore = useAuthStore()
+const router = useRouter()
 const form = reactive({
   name: '',
   email: '',
@@ -88,20 +94,17 @@ const form = reactive({
   password_confirmation: ''
 })
 
-const register = () => {
+const register = async () => {
   if (form.password !== form.password_confirmation) {
     alert('Les mots de passe ne correspondent pas.')
     return
   }
-  if (!form.name || !form.email || !form.password) {
-    alert('Veuillez remplir tous les champs.')
-    return
+  try {
+    await authStore.register(form)
+    alert('Inscription réussie ! Vous pouvez maintenant vous connecter.')
+    router.push('/login')
+  } catch (err) {
+    alert('Erreur : ' + authStore.error)
   }
-  console.log('Inscription:', form)
-  alert('Inscription réussie !')
-  // À connecter à ton API
 }
-definePageMeta({
-    layout: 'auth'
-})
 </script>

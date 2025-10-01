@@ -154,49 +154,69 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
+import { useCategoryStore } from '~/stores/categoryStore'
+import { useProductStore } from '~/stores/productStore'
+import { useRouter } from 'vue-router'
 
 definePageMeta({
-    layout: 'admin'
+  layout: 'admin'
 })
 
-// Mock de catégories (à remplacer par un appel API)
-const categories = [
-  { id: 1, name: 'Imprimantes' },
-  { id: 2, name: 'Scanners' },
-  { id: 3, name: 'Consommables' }
-]
+const categoryStore = useCategoryStore()
+const productStore = useProductStore()
+const router = useRouter()
+
+// Charger les catégories au montage
+onMounted(async () => {
+  if (categoryStore.categories.length === 0) {
+    await categoryStore.fetchCategories()
+  }
+})
 
 const form = reactive({
-  name: {
-    fr: '',
-    en: ''
-  },
+  name: { fr: '', en: '' },
   categorie_id: null,
-  description1: {
-    fr: '',
-    en: ''
-  },
-  description2: {
-    fr: '',
-    en: ''
-  },
+  description1: { fr: '', en: '' },
+  description2: { fr: '', en: '' },
   prix: null,
   status: 'active',
   images: []
 })
 
 const handleImageUpload = (event) => {
-  const files = Array.from(event.target.files)
-  form.images = files // Tu peux les envoyer via FormData plus tard
+  const files = Array.from(event.target.files || [])
+  form.images = files
 }
 
-const submit = () => {
+const submit = async () => {
   if (!form.name.fr || !form.name.en || !form.categorie_id || !form.prix) {
     alert('Veuillez remplir tous les champs obligatoires.')
     return
   }
-  console.log('Nouveau produit:', form)
-  alert('Produit ajouté avec succès !')
+
+  try {
+    // Préparer FormData
+    const formData = new FormData()
+    formData.append('name_fr', form.name.fr)
+    formData.append('name_en', form.name.en)
+    formData.append('categorie_id', form.categorie_id.toString())
+    formData.append('description1_fr', form.description1.fr)
+    formData.append('description1_en', form.description1.en)
+    formData.append('description2_fr', form.description2.fr)
+    formData.append('description2_en', form.description2.en)
+    formData.append('prix', form.prix.toString())
+    formData.append('status', form.status)
+
+    form.images.forEach(file => {
+      formData.append('images[]', file)
+    })
+
+    await productStore.createProduct(formData)
+    alert('Produit créé avec succès !')
+    router.push('/admin/product/')
+  } catch (err) {
+    alert('Erreur : ' + (err.message || err))
+  }
 }
 </script>

@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '~/stores/authStore'
+
+definePageMeta({ layout: 'auth' })
+
+const authStore = useAuthStore() // ✅ OK ici car page publique, mais on ne lit pas localStorage au setup
+const router = useRouter()
+const form = reactive({ email: '', password: '' })
+
+const login = async () => {
+  try {
+    await authStore.login(form)
+    router.push('/admin/product')
+  } catch (err) {
+    alert('Erreur : ' + authStore.error)
+  }
+}
+</script>
 <!-- app/pages/login.vue -->
 <template>
   <div class="min-h-screen flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
@@ -62,25 +82,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { reactive } from 'vue'
-
-const form = reactive({
-  email: '',
-  password: ''
-})
-
-const login = () => {
-  if (!form.email || !form.password) {
-    alert('Veuillez remplir tous les champs.')
-    return
-  }
-  console.log('Connexion:', form)
-  alert('Connexion réussie !')
-  // Ici, tu enverrais les données à ton API
-}
-definePageMeta({
-    layout: 'auth'
-})
-</script>

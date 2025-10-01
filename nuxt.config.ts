@@ -4,10 +4,11 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
- 
-
+   routeRules: {
+    '/admin/**': { ssr: false }
+   },
   modules: [
-    '@nuxt/content',
+   
     '@nuxt/eslint',
     '@nuxt/image',
     '@nuxtjs/i18n',
