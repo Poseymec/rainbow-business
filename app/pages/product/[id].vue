@@ -1,72 +1,97 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
-// Mock de produits
+const { t, locale } = useI18n()
+
+// Mock de produits avec descriptions traduisibles (optionnel)
 const products = [
   {
     id: 1,
-    name: 'papier aluminium',
+    name: 'Papier aluminium',
     category: 'papier',
     price: 1500,
     image: '/images/image3.jpg',
     rating: 4.8,
     reviews: 124,
-    description: [
-      'Qualité alimentaire premium.',
-      'Idéal pour la cuisson, la conservation et l’emballage.',
-      'Résistant à la chaleur et au froid.'
-    ]
+    description: {
+      fr: [
+        'Qualité alimentaire premium.',
+        'Idéal pour la cuisson, la conservation et l’emballage.',
+        'Résistant à la chaleur et au froid.'
+      ],
+      en: [
+        'Premium food-grade quality.',
+        'Ideal for cooking, storage, and packaging.',
+        'Heat and cold resistant.'
+      ]
+    }
   },
   {
     id: 2,
-    name: 'papier aluminium',
+    name: 'Papier aluminium - Lot de 3',
     category: 'papier',
     price: 3000,
     image: '/images/image2.jpg',
     rating: 4.5,
     reviews: 89,
-    description: ['Lot de 3 rouleaux.', 'Épaisseur renforcée.']
+    description: {
+      fr: ['Lot de 3 rouleaux.', 'Épaisseur renforcée.'],
+      en: ['Pack of 3 rolls.', 'Reinforced thickness.']
+    }
   },
   {
     id: 3,
-    name: 'papier aluminium',
+    name: 'Papier aluminium économique',
     category: 'papier',
     price: 1000,
     image: '/images/image3.jpg',
     rating: 4.9,
     reviews: 302,
-    description: ['Format économique.', 'Facile à déchirer.']
+    description: {
+      fr: ['Format économique.', 'Facile à déchirer.'],
+      en: ['Economy size.', 'Easy to tear.']
+    }
   },
   {
     id: 4,
-    name: 'Papier aluminium',
+    name: 'Papier aluminium petit format',
     category: 'papier',
     price: 500,
     image: '/images/image4.jpg',
     rating: 4.7,
     reviews: 256,
-    description: ['Petit format.', 'Idéal pour pique-niques.']
+    description: {
+      fr: ['Petit format.', 'Idéal pour pique-niques.'],
+      en: ['Small size.', 'Perfect for picnics.']
+    }
   },
   {
     id: 5,
-    name: 'papier aluminium',
+    name: 'Pack démarrage papier aluminium',
     category: 'papier',
     price: 500,
     image: '/images/image1.jpg',
     rating: 4.3,
     reviews: 45,
-    description: ['Pack de démarrage.']
+    description: {
+      fr: ['Pack de démarrage.'],
+      en: ['Starter pack.']
+    }
   },
   {
     id: 6,
-    name: 'papier aluminium',
+    name: 'Rouleau géant papier aluminium',
     category: 'papier',
     price: 1500,
     image: '/images/image4.jpg',
     rating: 4.6,
     reviews: 178,
-    description: ['Rouleau géant.', 'Livraison gratuite.']
+    description: {
+      fr: ['Rouleau géant.', 'Livraison gratuite.'],
+      en: ['Giant roll.', 'Free shipping.']
+    }
   }
 ]
 
@@ -88,12 +113,16 @@ const isFavorite = ref(false)
 
 const toggleFavorite = () => {
   isFavorite.value = !isFavorite.value
-  console.log(isFavorite.value ? 'Ajouté aux favoris' : 'Retiré des favoris')
 }
 
 const addToCart = () => {
   alert(`"${product.value.name}" ajouté au panier !`)
 }
+
+// Description selon la langue
+const productDescription = computed(() => {
+  return product.value.description[locale.value] || product.value.description.fr || []
+})
 </script>
 
 <template>
@@ -118,7 +147,7 @@ const addToCart = () => {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Retour aux produits
+          {{ t('product_detail.back_to_products') }}
         </NuxtLink>
       </div>
 
@@ -141,7 +170,7 @@ const addToCart = () => {
           <!-- Prix & Étoiles -->
           <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
             <p class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
-              {{ product.price.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }) }}
+              {{ product.price.toLocaleString('fr-FR', { style: 'currency', currency: t('product_detail.price_currency') }) }}
             </p>
 
             <div class="flex items-center gap-2 mt-2 sm:mt-0">
@@ -160,7 +189,7 @@ const addToCart = () => {
                 ({{ product.rating }})
               </p>
               <span class="text-sm font-medium text-gray-900 dark:text-white">
-                {{ product.reviews }} avis
+                {{ t('product_detail.reviews', { count: product.reviews }) }}
               </span>
             </div>
           </div>
@@ -189,36 +218,16 @@ const addToCart = () => {
                   d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
                 />
               </svg>
-              {{ isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}
-            </button>
-
-            <button
-              @click="addToCart"
-              class="text-white mt-4 sm:mt-0 bg-[#E8192C] hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-[#E8192C] dark:hover:bg-red-600 focus:outline-none dark:focus:ring-red-800 flex items-center justify-center"
-            >
-              <svg
-                class="w-5 h-5 -ms-2 me-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
-                />
-              </svg>
-              Ajouter au panier
+              {{ isFavorite ? t('product_detail.remove_from_favorites') : t('product_detail.add_to_favorites') }}
             </button>
           </div>
 
           <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
 
-          <!-- Description -->
+          <!-- Description traduite -->
           <div class="space-y-3">
             <p
-              v-for="(line, index) in product.description"
+              v-for="(line, index) in productDescription"
               :key="index"
               class="text-gray-500 dark:text-gray-400"
             >

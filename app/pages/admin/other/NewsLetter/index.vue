@@ -1,4 +1,27 @@
-<!-- app/pages/admin/newsletter/index.vue -->
+<script setup>
+import { ref, computed } from 'vue'
+import { Icon } from '@iconify/vue'
+
+definePageMeta({
+  layout: 'admin'
+})
+
+const subscribers = ref([
+  { id: 1, email: 'user@example.com', phone: '+225 01 23 45 67' }
+])
+
+const searchTerm = ref('')
+const filteredSubscribers = computed(() => {
+  return subscribers.value.filter(s => s.email.toLowerCase().includes(searchTerm.value.toLowerCase()))
+})
+
+const deleteSubscriber = (id) => {
+  if (confirm('Désabonner cet utilisateur ?')) {
+    subscribers.value = subscribers.value.filter(s => s.id !== id)
+  }
+}
+</script>
+
 <template>
   <div class="p-4">
     <h1 class="text-xl md:text-2xl font-bold text-red-600 mb-6">Abonnés à la newsletter</h1>
@@ -22,8 +45,12 @@
         <p class="font-bold text-gray-900 dark:text-white">{{ sub.email }}</p>
         <p v-if="sub.phone" class="text-sm text-gray-600 dark:text-gray-300">Tél : {{ sub.phone }}</p>
         <div class="mt-3">
-          <button @click="deleteSubscriber(sub.id)" class="px-3 py-1 bg-red-600 text-white text-xs rounded">
-            🗑️ Désabonner
+          <button
+            @click="deleteSubscriber(sub.id)"
+            class="p-2 rounded hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+            title="Désabonner"
+          >
+            <Icon icon="mdi:delete" width="18" class="text-red-500" />
           </button>
         </div>
       </div>
@@ -44,33 +71,21 @@
             <td class="px-4 py-4 text-sm text-gray-900 dark:text-white">{{ sub.email }}</td>
             <td class="px-4 py-4 text-sm text-gray-700 dark:text-gray-300">{{ sub.phone || '—' }}</td>
             <td class="px-4 py-4 text-sm">
-              <button @click="deleteSubscriber(sub.id)" class="px-3 py-1 bg-red-600 text-white text-xs rounded">
-                🗑️ Désabonner
+              <button
+                @click="deleteSubscriber(sub.id)"
+                class="p-2 rounded hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                title="Désabonner"
+              >
+                <Icon icon="mdi:delete" width="18" class="text-red-500" />
               </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <div v-if="filteredSubscribers.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
+      Aucun abonné trouvé.
+    </div>
   </div>
 </template>
-
-<script setup>
-import { ref, computed } from 'vue'
-
-const subscribers = ref([
-  { id: 1, email: 'user@example.com', phone: '+225 01 23 45 67' }
-])
-
-const searchTerm = ref('')
-const filteredSubscribers = computed(() => {
-  return subscribers.value.filter(s => s.email.toLowerCase().includes(searchTerm.value.toLowerCase()))
-})
-
-const deleteSubscriber = (id) => {
-  if (confirm('Désabonner ?')) subscribers.value = subscribers.value.filter(s => s.id !== id)
-}
-definePageMeta({
-  layout: 'admin'
-})
-</script>

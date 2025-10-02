@@ -28,14 +28,32 @@ export default defineNuxtConfig({
     
   },
   
-  i18n: {
+  /*i18n: {
   defaultLocale: 'fr',
   langDir: 'locales/',
   locales: [
     { code: 'en', name: 'English', file: 'en.json' },
     { code: 'fr', name: 'Français', file: 'fr.json' }
   ]
-  }, 
+  }*/
+
+   i18n: {
+    strategy: 'prefix_except_default',
+    defaultLocale: 'fr',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root'
+    },
+    locales: [
+      { code: 'fr', iso: 'fr-FR', file: 'fr.json', name: 'Français' },
+      { code: 'en', iso: 'en-US', file: 'en.json', name: 'English' }
+    ],
+    langDir: 'locales', // 👈 ton dossier /locales
+    vueI18n: './i18n.config.ts' // 👈 fichier de config vue-i18n
+  }
+
+, 
   app: {
     baseURL: '/app/',
     head: {

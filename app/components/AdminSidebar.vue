@@ -230,7 +230,7 @@
           <ul v-show="openSections.contact" class="pl-6 mt-1 space-y-1">
             <li>
               <NuxtLink
-                to="/admin/other/contact-list"
+                to="/admin/other/contact/"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
               >
                 📋 Messages de contact
@@ -238,7 +238,7 @@
             </li>
             <li>
               <NuxtLink
-                to="/admin/other/NewsLetter"
+                to="/admin/other/NewsLetter/"
                 class="block p-2 rounded hover:bg-red-600 transition-colors"
               >
                 📋 Abonnés à la newsletter
@@ -311,6 +311,7 @@
 
 <script setup>
 import { reactive } from 'vue'
+
 
 const props = defineProps({
   isOpen: Boolean

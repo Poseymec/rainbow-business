@@ -1,4 +1,31 @@
-<!-- app/pages/admin/contact/index.vue -->
+<script setup>
+import { ref, computed } from 'vue'
+import { Icon } from '@iconify/vue'
+
+definePageMeta({
+  layout: 'admin'
+})
+
+const messages = ref([
+  { id: 1, name: 'Jean', email: 'jean@example.com', subject: 'Livraison', message: 'Bonjour, ma commande...' }
+])
+
+const searchTerm = ref('')
+const filteredMessages = computed(() => {
+  return messages.value.filter(m =>
+    m.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+    m.email.toLowerCase().includes(searchTerm.value.toLowerCase())
+  )
+})
+
+const viewMessage = (msg) => alert(msg.message)
+const deleteMessage = (id) => {
+  if (confirm('Supprimer ce message ?')) {
+    messages.value = messages.value.filter(m => m.id !== id)
+  }
+}
+</script>
+
 <template>
   <div class="p-4">
     <h1 class="text-xl md:text-2xl font-bold text-red-600 mb-6">Messages de contact</h1>
@@ -24,8 +51,20 @@
         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ msg.subject }}</p>
         <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">{{ msg.message }}</p>
         <div class="mt-3 flex gap-2">
-          <button @click="viewMessage(msg)" class="px-2 py-1 bg-blue-600 text-white text-xs rounded">👁️</button>
-          <button @click="deleteMessage(msg.id)" class="px-2 py-1 bg-red-600 text-white text-xs rounded">🗑️</button>
+          <button
+            @click="viewMessage(msg)"
+            class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            title="Voir le message"
+          >
+            <Icon icon="mdi:eye" width="18" class="text-blue-500" />
+          </button>
+          <button
+            @click="deleteMessage(msg.id)"
+            class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            title="Supprimer"
+          >
+            <Icon icon="mdi:delete" width="18" class="text-red-500" />
+          </button>
         </div>
       </div>
     </div>
@@ -48,37 +87,34 @@
             <td class="px-4 py-4 text-sm text-gray-700 dark:text-gray-300">{{ msg.email }}</td>
             <td class="px-4 py-4 text-sm text-gray-900 dark:text-white">{{ msg.subject }}</td>
             <td class="px-4 py-4 text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{{ msg.message }}</td>
-            <td class="px-4 py-4 text-sm space-x-2">
-              <button @click="viewMessage(msg)" class="px-2 py-1 bg-blue-600 text-white text-xs rounded">👁️</button>
-              <button @click="deleteMessage(msg.id)" class="px-2 py-1 bg-red-600 text-white text-xs rounded">🗑️</button>
+            <td class="px-4 py-4 text-sm">
+              <div class="flex items-center gap-2">
+                <NuxtLink
+                  :to="`/admin/other/contact/${msg.id}/`"
+                  class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  title="Voir le message"
+                >
+                  <Icon icon="mdi:eye" width="18" class="text-blue-500" />
+                
+
+                </NuxtLink>
+                
+                <button
+                  @click="deleteMessage(msg.id)"
+                  class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  title="Supprimer"
+                >
+                  <Icon icon="mdi:delete" width="18" class="text-red-500" />
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <div v-if="filteredMessages.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
+      Aucun message trouvé.
+    </div>
   </div>
 </template>
-
-<script setup>
-import { ref, computed } from 'vue'
-
-const messages = ref([
-  { id: 1, name: 'Jean', email: 'jean@example.com', subject: 'Livraison', message: 'Bonjour, ma commande...' }
-])
-
-const searchTerm = ref('')
-const filteredMessages = computed(() => {
-  return messages.value.filter(m =>
-    m.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-    m.email.toLowerCase().includes(searchTerm.value.toLowerCase())
-  )
-})
-
-const viewMessage = (msg) => alert(msg.message)
-const deleteMessage = (id) => {
-  if (confirm('Supprimer ?')) messages.value = messages.value.filter(m => m.id !== id)
-}
-definePageMeta({
-  layout: 'admin'
-})
-</script>

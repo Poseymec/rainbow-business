@@ -24,7 +24,7 @@
 
         <!-- Bouton CTA -->
         <NuxtLink
-          to="/contact"
+          to="../product"
           class="inline-block px-6 py-3 bg-gradient-to-r from-[#E8192C] to-[#E8192C] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
         >
           {{ $t('home.cta_button') }}

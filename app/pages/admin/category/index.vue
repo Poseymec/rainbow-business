@@ -120,17 +120,10 @@ const confirmDelete = (category) => {
               :title="category.status === 'active' ? 'Désactiver' : 'Activer'"
             >
               <Icon
-                v-if="category.status === 'active'"
-                icon="mdi:close-circle"
-                width="20"
-                class="text-red-500"
-              />
-              <Icon
-                v-else
-                icon="mdi:check-circle"
-                width="20"
-                class="text-green-500"
-              />
+                  :icon="category.status === 'active' ? 'mdi:toggle-switch' : 'mdi:toggle-switch-off'"
+                  width="18"
+                  :class="category.status === 'active' ? 'text-green-500' : 'text-gray-400'"
+                />
             </button>
 
             <!-- Bouton Supprimer -->

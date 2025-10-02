@@ -1,27 +1,21 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // État
 const searchQuery = ref('')
-const selectedCategory = ref('') // <-- Une seule catégorie sélectionnée
+const selectedCategory = ref('') // slug de la catégorie
 const minPrice = ref(0)
-const maxPrice = ref(1000)
+const maxPrice = ref(5000)
 const sortBy = ref('popular')
 
-// Données mock
-const categories = [
-  { id: 0, name: 'Toutes les catégories', slug: '' }, // Option "Tout"
-  { id: 1, name: 'Imprimantes', slug: 'imprimantes' },
-  { id: 2, name: 'Scanners', slug: 'scanners' },
-  { id: 3, name: 'Consommables', slug: 'consommables' },
-  { id: 4, name: 'Papier', slug: 'papier' },
-  { id: 5, name: 'Logiciels', slug: 'logiciels' }
-]
-
+// Données mock (à remplacer par un store Pinia + API plus tard)
 const products = [
   {
     id: 1,
-    name: 'papier alluminium',
+    name: 'Papier aluminium premium',
     category: 'papier',
     price: 1500,
     image: '/images/image3.jpg',
@@ -30,7 +24,7 @@ const products = [
   },
   {
     id: 2,
-    name: 'papier alluminium',
+    name: 'Papier aluminium économique',
     category: 'papier',
     price: 3000,
     image: '/images/image2.jpg',
@@ -39,7 +33,7 @@ const products = [
   },
   {
     id: 3,
-    name: 'papier alluminium',
+    name: 'Papier aluminium industriel',
     category: 'papier',
     price: 1000,
     image: '/images/image3.jpg',
@@ -48,7 +42,7 @@ const products = [
   },
   {
     id: 4,
-    name: 'Papier alluminium',
+    name: 'Papier aluminium alimentaire',
     category: 'papier',
     price: 500,
     image: '/images/image4.jpg',
@@ -57,7 +51,7 @@ const products = [
   },
   {
     id: 5,
-    name: 'papier alluminium',
+    name: 'Papier aluminium recyclé',
     category: 'papier',
     price: 500,
     image: '/images/image1.jpg',
@@ -66,7 +60,7 @@ const products = [
   },
   {
     id: 6,
-    name: 'papier alluminium',
+    name: 'Papier aluminium extra-large',
     category: 'papier',
     price: 1500,
     image: '/images/image4.jpg',
@@ -75,42 +69,47 @@ const products = [
   }
 ]
 
-// Calcul des produits filtrés
+// Catégories traduites
+const categories = computed(() => [
+  { id: 0, name: t('products_page.categories.all'), slug: '' },
+  { id: 1, name: t('products_page.categories.imprimantes'), slug: 'imprimantes' },
+  { id: 2, name: t('products_page.categories.scanners'), slug: 'scanners' },
+  { id: 3, name: t('products_page.categories.consommables'), slug: 'consommables' },
+  { id: 4, name: t('products_page.categories.papier'), slug: 'papier' },
+  { id: 5, name: t('products_page.categories.logiciels'), slug: 'logiciels' }
+])
+
+// Produits filtrés et triés
 const filteredProducts = computed(() => {
-  return products.filter(product => {
-    // Recherche par nom
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-    
-    // Filtre par catégorie (si aucune sélectionnée, on affiche tout)
-    const matchesCategory = !selectedCategory.value || product.category === selectedCategory.value
-    
-    // Filtre par prix
-    const matchesPrice = product.price >= minPrice.value && product.price <= maxPrice.value
-    
-    return matchesSearch && matchesCategory && matchesPrice
-  }).sort((a, b) => {
-    // Tri
-    switch (sortBy.value) {
-      case 'price-asc':
-        return a.price - b.price
-      case 'price-desc':
-        return b.price - a.price
-      case 'rating':
-        return b.rating - a.rating
-      case 'reviews':
-        return b.reviews - a.reviews
-      default:
-        return 0
-    }
-  })
+  return products
+    .filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+      const matchesCategory = !selectedCategory.value || product.category === selectedCategory.value
+      const matchesPrice = product.price >= minPrice.value && product.price <= maxPrice.value
+      return matchesSearch && matchesCategory && matchesPrice
+    })
+    .sort((a, b) => {
+      switch (sortBy.value) {
+        case 'price-asc':
+          return a.price - b.price
+        case 'price-desc':
+          return b.price - a.price
+        case 'rating':
+          return b.rating - a.rating
+        case 'reviews':
+          return b.reviews - a.reviews
+        default:
+          return 0
+      }
+    })
 })
 
 // Réinitialiser les filtres
 const resetFilters = () => {
+  searchQuery.value = ''
   selectedCategory.value = ''
   minPrice.value = 0
-  maxPrice.value = 1000
-  searchQuery.value = ''
+  maxPrice.value = 5000
   sortBy.value = 'popular'
 }
 </script>
@@ -118,7 +117,7 @@ const resetFilters = () => {
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold text-red-500 dark:text-red-500 mb-8">
-      Nos Produits
+      {{ t('products_page.title') }}
     </h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -127,21 +126,21 @@ const resetFilters = () => {
         <!-- Recherche -->
         <div>
           <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Rechercher
+            {{ t('products_page.search_label') }}
           </label>
           <input
             id="search"
             v-model="searchQuery"
             type="text"
-            placeholder="Nom du produit..."
+            :placeholder="t('products_page.search_placeholder')"
             class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E8192C] focus:border-transparent"
           />
         </div>
 
-        <!-- Catégories (Liste déroulante) -->
+        <!-- Catégories -->
         <div>
           <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Catégorie
+            {{ t('products_page.category_label') }}
           </label>
           <select
             id="category"
@@ -161,29 +160,25 @@ const resetFilters = () => {
         <!-- Prix -->
         <div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Prix (F)
+            {{ t('products_page.price_label') }}
           </h3>
           <div class="space-y-4">
-            <div>
-              <input
-                v-model.number="minPrice"
-                type="number"
-                min="0"
-                :max="maxPrice"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                placeholder="Min"
-              />
-            </div>
-            <div>
-              <input
-                v-model.number="maxPrice"
-                type="number"
-                :min="minPrice"
-                max="5000"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                placeholder="Max"
-              />
-            </div>
+            <input
+              v-model.number="minPrice"
+              type="number"
+              min="0"
+              :max="maxPrice"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+              :placeholder="t('products_page.min_price')"
+            />
+            <input
+              v-model.number="maxPrice"
+              type="number"
+              :min="minPrice"
+              max="10000"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+              :placeholder="t('products_page.max_price')"
+            />
           </div>
         </div>
 
@@ -192,7 +187,7 @@ const resetFilters = () => {
           @click="resetFilters"
           class="w-full py-2 px-4 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
         >
-          Réinitialiser les filtres
+          {{ t('products_page.reset_filters') }}
         </button>
       </div>
 
@@ -201,89 +196,75 @@ const resetFilters = () => {
         <!-- Barre de tri -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ filteredProducts.length }} produit(s) trouvé(s)
+            {{ t('products_page.results_count', { count: filteredProducts.length }) }}
           </p>
           <div class="flex items-center gap-2">
             <label for="sort" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Trier par :
+              {{ t('products_page.sort_label') }}
             </label>
             <select
               id="sort"
               v-model="sortBy"
               class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-[#E8192C]"
             >
-              <option value="popular">Populaire</option>
-              <option value="price-asc">Prix croissant</option>
-              <option value="price-desc">Prix décroissant</option>
-              <option value="rating">Meilleure note</option>
-              <option value="reviews">Plus d'avis</option>
+              <option value="popular">{{ t('products_page.sort_options.popular') }}</option>
+              <option value="price-asc">{{ t('products_page.sort_options.price_asc') }}</option>
+              <option value="price-desc">{{ t('products_page.sort_options.price_desc') }}</option>
+              <option value="rating">{{ t('products_page.sort_options.rating') }}</option>
+              <option value="reviews">{{ t('products_page.sort_options.reviews') }}</option>
             </select>
           </div>
         </div>
 
-        <!-- Grille de produits -->
-        <div
-          v-if="filteredProducts.length > 0"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <div
-            v-for="product in filteredProducts"
-            :key="product.id"
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow p-4"
-          >
-            <div class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg mb-4 overflow-hidden">
-              <img
-                :src="product.image"
-                :alt="product.name"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
-              {{ product.name }}
-            </h3>
-           <!-- <div class="flex items-center gap-1 mb-2">
-              <div v-for="star in 5" :key="star" class="text-yellow-400">
-                <svg v-if="star <= Math.floor(product.rating)" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current text-gray-300 dark:text-gray-600" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
+        <!-- ✅ Affichage conditionnel : grille OU message d'erreur -->
+        <div v-if="filteredProducts.length > 0">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div
+              v-for="product in filteredProducts"
+              :key="product.id"
+              class="bg-gray-200 dark:bg-gray-800 rounded-xl shadow-xl hover:shadow-md transition-shadow p-4"
+            >
+              <div class="aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 overflow-hidden">
+                <img
+                  :src="product.image"
+                  :alt="product.name"
+                  class="w-full h-full object-cover"
+                />
               </div>
-              <span class="text-sm text-gray-600 dark:text-gray-400">
-                ({{ product.reviews }})
-              </span>
-            </div>-->
-            <div class="flex items-center justify-between">
-              <span class="text-lg font-bold text-[#E8192C]">
-                {{ product.price.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }) }}
-              </span>
-             <NuxtLink
-                :to="`/product/${product.id}`"
-                class="px-3 py-1 text-sm bg-[#E8192C] hover:bg-red-700 text-white rounded transition-colors"
+              <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                {{ product.name }}
+              </h3>
+              <div class="flex items-center justify-between">
+                <span class="text-lg font-bold text-[#E8192C]">
+                  {{ product.price.toLocaleString('fr-FR', { style: 'currency', currency: 'XOF' }) }}
+                </span>
+                <NuxtLink
+                  :to="`/product/${product.id}`"
+                  class="px-3 py-1 text-sm bg-[#E8192C] hover:bg-red-700 text-white rounded transition-colors"
                 >
-                Voir
-            </NuxtLink>
+                  {{ t('products_page.view_button') }}
+                </NuxtLink>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Aucun produit trouvé -->
+        <!-- ✅ v-else juste après le v-if -->
         <div v-else class="text-center py-12">
           <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.467-.884-6.124-2.364M18 12a6 6 0 11-12 0 6 6 0 0112 0z" />
           </svg>
           <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-1">
-            Aucun produit trouvé
+            {{ t('products_page.no_results_title') }}
           </h3>
           <p class="text-gray-500 dark:text-gray-400">
-            Essayez de modifier vos filtres ou votre recherche.
+            {{ t('products_page.no_results_text') }}
           </p>
           <button
             @click="resetFilters"
             class="mt-4 px-4 py-2 text-sm font-medium text-[#E8192C] hover:text-red-700 border border-[#E8192C] hover:border-red-700 rounded transition-colors"
           >
-            Réinitialiser les filtres
+            {{ t('products_page.reset_filters') }}
           </button>
         </div>
       </div>
