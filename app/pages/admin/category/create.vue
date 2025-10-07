@@ -51,9 +51,7 @@ import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCategoryStore } from '~/stores/categoryStore'
 
-definePageMeta({
-  layout: 'admin'
-})
+definePageMeta({ layout: 'admin' })
 
 const router = useRouter()
 const categoryStore = useCategoryStore()
@@ -65,23 +63,18 @@ const form = reactive({
   }
 })
 
-const loading = ref(false)
-
 const submit = async () => {
-  if (!form.name.fr || !form.name.en) {
+  if (!form.name.fr.trim() || !form.name.en.trim()) {
     alert('Veuillez remplir les noms en français et en anglais.')
     return
   }
 
-  loading.value = true
   try {
     await categoryStore.createCategory(form)
     alert('Catégorie ajoutée avec succès !')
     router.push('/admin/category/')
   } catch (err) {
-    alert('Erreur : ' + (err.message || 'Impossible d’ajouter la catégorie.'))
-  } finally {
-    loading.value = false
+    alert('Erreur : ' + (categoryStore.error || 'Impossible d’ajouter la catégorie.'))
   }
 }
 </script>

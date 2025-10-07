@@ -1,4 +1,4 @@
-// stores/categoryStore.ts
+// ~/stores/categoryStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -22,10 +22,12 @@ export const useCategoryStore = defineStore('category', () => {
     loading.value = true
     error.value = null
     try {
-      const data = await $fetch<Category[]>('/api/categories')
+      const data = await $fetch<Category[]>('/api/categories', {
+        credentials: 'include' // ⚠️ Important pour Sanctum
+      })
       categories.value = data
     } catch (err: any) {
-      error.value = err.message || 'Erreur lors du chargement des catégories'
+      error.value = err.data?.message || 'Erreur lors du chargement des catégories'
       console.error(err)
     } finally {
       loading.value = false
@@ -33,41 +35,66 @@ export const useCategoryStore = defineStore('category', () => {
   }
 
   // Créer une catégorie
-  const createCategory = async (category: Omit<Category, 'id'>) => {
+  const createCategory = async (category: Omit<Category, 'id' | 'created_at' | 'updated_at'>) => {
+    loading.value = true
+    error.value = null
     try {
       const newCategory = await $fetch<Category>('/api/categories', {
         method: 'POST',
-        body: category
+        body: category,
+        credentials: 'include'
       })
       categories.value.push(newCategory)
       return newCategory
     } catch (err: any) {
-      throw new Error(err.data?.message || 'Erreur lors de la création')
+      error.value = err.data?.message || 'Erreur lors de la création'
+      throw err
+    } finally {
+      loading.value = false
     }
   }
 
-  // Mettre à jour
+  // Mettre à jour une catégorie
   const updateCategory = async (id: number, category: Partial<Category>) => {
+    loading.value = true
+    error.value = null
     try {
       const updated = await $fetch<Category>(`/api/categories/${id}`, {
         method: 'PUT',
-        body: category
+        body: category,
+        credentials: 'include'
       })
       const index = categories.value.findIndex(c => c.id === id)
-      if (index !== -1) categories.value[index] = updated
+      if (index !== -1) {
+        categories.value[index] = updated
+      } else {
+        // Optionnel : recharge la liste si pas en cache
+        await fetchCategories()
+      }
       return updated
     } catch (err: any) {
-      throw new Error(err.data?.message || 'Erreur lors de la mise à jour')
+      error.value = err.data?.message || 'Erreur lors de la mise à jour'
+      throw err
+    } finally {
+      loading.value = false
     }
   }
 
-  // Supprimer
+  // Supprimer une catégorie
   const deleteCategory = async (id: number) => {
+    loading.value = true
+    error.value = null
     try {
-      await $fetch(`/api/categories/${id}`, { method: 'DELETE' })
+      await $fetch(`/api/categories/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
       categories.value = categories.value.filter(c => c.id !== id)
     } catch (err: any) {
-      throw new Error(err.data?.message || 'Erreur lors de la suppression')
+      error.value = err.data?.message || 'Erreur lors de la suppression'
+      throw err
+    } finally {
+      loading.value = false
     }
   }
 

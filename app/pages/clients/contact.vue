@@ -148,32 +148,67 @@
     </div>
   </div>
 </template>
-
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
+import { useNewsLetterStore } from '~/stores/newsLetterStore'
+import { useContactStore } from '~/stores/contactStore'
 
 const { t } = useI18n()
 
-const contactForm = ref({ name: '', email: '', phone: '', message: '' })
-const newsletterForm = ref({ email: '', phone: '' })
+// ✅ Noms conformes à la convention Pinia
+const subscriberStore = useNewsLetterStore()
+const contactMessageStore = useContactStore()
 
-const submitContact = () => {
+// Formulaires
+const contactForm = ref({
+  name: '',
+  email: '',
+  phone: '',
+  message: ''
+})
+
+const newsletterForm = ref({
+  email: '',
+  phone: ''
+})
+
+// Soumission du formulaire de contact
+const submitContact = async () => {
   if (!contactForm.value.name || !contactForm.value.email || !contactForm.value.message) {
     alert(t('contact_page.alerts.contact_missing_fields'))
     return
   }
-  alert(t('contact_page.alerts.contact_success'))
-  contactForm.value = { name: '', email: '', phone: '', message: '' }
+
+  try {
+    // 🔑 Ajout de `subject` pour correspondre au type attendu
+    await contactMessageStore.createMessage({
+      ...contactForm.value,
+      subject: 'Message depuis le formulaire de contact' // ou toute autre valeur par défaut
+    })
+
+    alert(t('contact_page.alerts.contact_success'))
+    // Réinitialisation
+    contactForm.value = { name: '', email: '', phone: '', message: '' }
+  } catch (err: any) {
+    alert(err.message || t('contact_page.alerts.contact_error'))
+  }
 }
 
-const submitNewsletter = () => {
+// Soumission de la newsletter
+const submitNewsletter = async () => {
   if (!newsletterForm.value.email) {
     alert(t('contact_page.alerts.newsletter_missing_email'))
     return
   }
-  alert(t('contact_page.alerts.newsletter_success'))
-  newsletterForm.value = { email: '', phone: '' }
+
+  try {
+    await subscriberStore.createSubscriber(newsletterForm.value)
+    alert(t('contact_page.alerts.newsletter_success'))
+    newsletterForm.value = { email: '', phone: '' }
+  } catch (err: any) {
+    alert(err.message || t('contact_page.alerts.newsletter_error'))
+  }
 }
 </script>

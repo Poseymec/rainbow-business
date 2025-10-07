@@ -1,4 +1,4 @@
-// stores/productStore.ts
+// ~/stores/productStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -19,7 +19,7 @@ export interface Product {
   }
   prix: number
   status: 'active' | 'inactive'
-  images: string[] // Laravel retournera les URLs des images
+  images: string[] // URLs retournées par Laravel
   created_at?: string
   updated_at?: string
 }
@@ -33,54 +33,83 @@ export const useProductStore = defineStore('product', () => {
     loading.value = true
     error.value = null
     try {
-      const data = await $fetch<Product[]>('/api/products')
+      const data = await $fetch<Product[]>('/api/products', {
+        credentials: 'include'
+      })
       products.value = data
     } catch (err: any) {
-      error.value = err.message || 'Erreur lors du chargement des produits'
+      error.value = err.data?.message || 'Erreur lors du chargement des produits'
       console.error(err)
     } finally {
       loading.value = false
     }
   }
 
-  const createProduct = async (productData: FormData | Omit<Product, 'id' | 'images'> & { images?: File[] }) => {
-    // On gère FormData pour les images
+  const createProduct = async (formData: FormData) => {
+    loading.value = true
+    error.value = null
     try {
+      // Important : ne pas définir Content-Type → laisse le navigateur le gérer avec boundary
       const newProduct = await $fetch<Product>('/api/products', {
         method: 'POST',
-        body: productData
+        body: formData,
+        credentials: 'include'
       })
       products.value.push(newProduct)
       return newProduct
     } catch (err: any) {
-      throw new Error(err.data?.message || 'Erreur lors de la création du produit')
+      error.value = err.data?.message || 'Erreur lors de la création du produit'
+      throw err
+    } finally {
+      loading.value = false
     }
   }
 
-  const updateProduct = async (id: number, productData: FormData | Partial<Product>) => {
+  const updateProduct = async (id: number, formData: FormData) => {
+    loading.value = true
+    error.value = null
     try {
+      // Laravel attend _method=PUT dans FormData
+      formData.append('_method', 'PUT')
       const updated = await $fetch<Product>(`/api/products/${id}`, {
-        method: 'POST', // Laravel utilise POST + _method=PUT
-        body: {
-          ...productData,
-          _method: 'PUT'
-        }
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
       })
       const index = products.value.findIndex(p => p.id === id)
-      if (index !== -1) products.value[index] = updated
+      if (index !== -1) {
+        products.value[index] = updated
+      } else {
+        await fetchProducts() // recharge si pas en cache
+      }
       return updated
     } catch (err: any) {
-      throw new Error(err.data?.message || 'Erreur lors de la mise à jour')
+      error.value = err.data?.message || 'Erreur lors de la mise à jour'
+      throw err
+    } finally {
+      loading.value = false
     }
   }
 
   const deleteProduct = async (id: number) => {
+    loading.value = true
+    error.value = null
     try {
-      await $fetch(`/api/products/${id}`, { method: 'DELETE' })
+      await $fetch(`/api/products/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
       products.value = products.value.filter(p => p.id !== id)
     } catch (err: any) {
-      throw new Error(err.data?.message || 'Erreur lors de la suppression')
+      error.value = err.data?.message || 'Erreur lors de la suppression'
+      throw err
+    } finally {
+      loading.value = false
     }
+  }
+
+  const getProductById = (id: number) => {
+    return products.value.find(p => p.id === id)
   }
 
   const productsByCategory = computed(() => {
@@ -88,10 +117,6 @@ export const useProductStore = defineStore('product', () => {
       return products.value.filter(p => p.categorie_id === categoryId)
     }
   })
-
-  const getProductById = (id: number) => {
-    return products.value.find(p => p.id === id)
-  }
 
   return {
     products: computed(() => products.value),

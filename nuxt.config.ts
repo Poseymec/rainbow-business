@@ -1,43 +1,34 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import tailwindcss from "@tailwindcss/vite";
-import viteTsconfigPaths from 'vite-tsconfig-paths';
+import tailwindcss from '@tailwindcss/vite'
+import viteTsconfigPaths from 'vite-tsconfig-paths'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-   routeRules: {
-    '/admin/**': { ssr: false }
-   },
+
+  // ✅ Un seul bloc routeRules
+  routeRules: {
+    '/admin/**': { ssr: false },
+    '/api/**': { cors: true }
+  },
+
   modules: [
-   
     '@nuxt/eslint',
     '@nuxt/image',
     '@nuxtjs/i18n',
-    '@pinia/nuxt',
-
-    
+    '@pinia/nuxt'
   ],
-   
-   // Configuration globale des CSS
+
   css: ['@/assets/css/main.css'],
-  
+
   vite: {
     plugins: [
       tailwindcss(),
       viteTsconfigPaths()
-    ],
-    
+    ]
   },
-  
-  /*i18n: {
-  defaultLocale: 'fr',
-  langDir: 'locales/',
-  locales: [
-    { code: 'en', name: 'English', file: 'en.json' },
-    { code: 'fr', name: 'Français', file: 'fr.json' }
-  ]
-  }*/
 
-   i18n: {
+  i18n: {
     strategy: 'prefix_except_default',
     defaultLocale: 'fr',
     detectBrowserLanguage: {
@@ -49,16 +40,31 @@ export default defineNuxtConfig({
       { code: 'fr', iso: 'fr-FR', file: 'fr.json', name: 'Français' },
       { code: 'en', iso: 'en-US', file: 'en.json', name: 'English' }
     ],
-    langDir: 'locales', // 👈 ton dossier /locales
-    vueI18n: './i18n.config.ts' // 👈 fichier de config vue-i18n
-  }
+    langDir: 'locales',
+    vueI18n: './i18n.config.ts'
+  },
 
-, 
   app: {
     baseURL: '/app/',
     head: {
-      title: 'Rainbow-busness',
-    
+      title: 'Rainbow-busness'
+    }
+  },
+
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000'
+    }
+  },
+
+  // ✅ Proxy API pour le développement
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+        prependPath: true
+      }
     }
   }
 })

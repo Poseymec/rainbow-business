@@ -153,7 +153,7 @@
   </div>
 </template>
 
-<script setup>
+ <script setup>
 import { reactive, onMounted } from 'vue'
 import { useCategoryStore } from '~/stores/categoryStore'
 import { useProductStore } from '~/stores/productStore'
@@ -190,13 +190,12 @@ const handleImageUpload = (event) => {
 }
 
 const submit = async () => {
-  if (!form.name.fr || !form.name.en || !form.categorie_id || !form.prix) {
+  if (!form.name.fr.trim() || !form.name.en.trim() || !form.categorie_id || !form.prix) {
     alert('Veuillez remplir tous les champs obligatoires.')
     return
   }
 
   try {
-    // Préparer FormData
     const formData = new FormData()
     formData.append('name_fr', form.name.fr)
     formData.append('name_en', form.name.en)
@@ -216,7 +215,8 @@ const submit = async () => {
     alert('Produit créé avec succès !')
     router.push('/admin/product/')
   } catch (err) {
-    alert('Erreur : ' + (err.message || err))
+    alert('Erreur : ' + (productStore.error || 'Impossible de créer le produit.'))
   }
 }
+
 </script>

@@ -1,40 +1,45 @@
 <!-- app/components/admin/CategoryList.vue -->
 <script setup>
-import { ref, computed } from 'vue'
-import{Icon} from '@iconify/vue'
+import { ref, computed, onMounted } from 'vue'
+import { Icon } from '@iconify/vue'
+import { useCategoryStore } from '~/stores/categoryStore'
+
 definePageMeta({
     layout: 'admin'
 })
 
-const categories = ref([
-  { id: 1, rank: 1, name: 'Imprimantes', status: 'active' },
-  { id: 2, rank: 2, name: 'Scanners', status: 'inactive' }
-])
+const categoryStore = useCategoryStore()
 
 const searchTerm = ref('')
-const statusFilter = ref('all')
+const statusFilter = ref('all') // ⚠️ Tu n’as pas de "status" dans ton modèle → à ajouter ou supprimer
+
+// ⚠️ Si tu n’as pas de champ "status", retire le filtre de statut
+// Sinon, ajoute-le dans ton modèle Laravel
+
+onMounted(() => {
+  if (categoryStore.categories.length === 0) {
+    categoryStore.fetchCategories()
+  }
+})
 
 const filteredCategories = computed(() => {
-  return categories.value.filter(category => {
-    const matchesSearch = category.name.toLowerCase().includes(searchTerm.value.toLowerCase())
-    const matchesStatus = statusFilter.value === 'all' || category.status === statusFilter.value
-    return matchesSearch && matchesStatus
+  return categoryStore.categories.filter(category => {
+    const matchesSearch = category.name.fr.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+                          category.name.en.toLowerCase().includes(searchTerm.value.toLowerCase())
+    // Si tu gardes le statut :
+    // const matchesStatus = statusFilter.value === 'all' || category.status === statusFilter.value
+    return matchesSearch
   })
 })
 
-const toggleStatus = (category) => {
-  category.status = category.status === 'active' ? 'inactive' : 'active'
-}
-
 const confirmDelete = (category) => {
-  if (confirm(`Supprimer "${category.name}" ?`)) {
-    categories.value = categories.value.filter(c => c.id !== category.id)
+  if (confirm(`Supprimer "${category.name.fr}" ?`)) {
+    categoryStore.deleteCategory(category.id)
   }
 }
 </script>
 
 <template>
-  <!-- 🔷 En-tête -->
   <div class="mb-6">
     <h1 class="text-2xl font-bold text-red-600 dark:text-red-400">Catégories</h1>
     <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -44,14 +49,14 @@ const confirmDelete = (category) => {
         placeholder="Rechercher..."
         class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#E8192C] dark:bg-gray-800 dark:border-gray-700"
       />
-      <select
-        v-model="statusFilter"
-        class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#E8192C] dark:bg-gray-800 dark:border-gray-700"
-      >
+      <!--
+      ⚠️ Supprime ce select si tu n’as pas de "status"
+      <select v-model="statusFilter" class="...">
         <option value="all">Tous les statuts</option>
         <option value="active">Actif</option>
         <option value="inactive">Inactif</option>
       </select>
+      -->
       <NuxtLink
         to="/admin/category/create"
         class="px-4 py-2 bg-[#E8192C] text-white rounded-lg hover:bg-red-700 transition-colors text-center"
@@ -61,82 +66,47 @@ const confirmDelete = (category) => {
     </div>
   </div>
 
-  <!-- 🔷 Tableau -->
-  <div class="overflow-x-auto rounded-lg shadow-sm">
+  <!-- Affichage loading -->
+  <div v-if="categoryStore.loading" class="text-center py-6">Chargement des catégories...</div>
+
+  <!-- Erreur -->
+  <div v-else-if="categoryStore.error" class="text-red-500 py-4">
+    {{ categoryStore.error }}
+  </div>
+
+  <!-- Tableau -->
+  <div v-else class="overflow-x-auto rounded-lg shadow-sm">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
         <tr>
           <th scope="col" class="px-4 py-3">#</th>
-          <th scope="col" class="px-4 py-3">Nom</th>
-          <th scope="col" class="px-4 py-3">Statut</th>
+          <th scope="col" class="px-4 py-3">Nom (FR / EN)</th>
           <th scope="col" class="px-4 py-3 text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="category in filteredCategories"
+          v-for="(category, index) in filteredCategories"
           :key="category.id"
-          class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
         >
-          <td class="px-4 py-3">{{ category.rank }}</td>
+          <td class="px-4 py-3">{{ index + 1 }}</td>
           <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
-            {{ category.name }}
-          </td>
-          <td class="px-4 py-3">
-            <span
-              :class="[
-                'px-2 py-1 rounded-full text-xs font-medium',
-                category.status === 'active'
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                  : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-              ]"
-            >
-              {{ category.status === 'active' ? 'Actif' : 'Inactif' }}
-            </span>
+            {{ category.name.fr }}<br />
+            <span class="text-sm text-gray-500">{{ category.name.en }}</span>
           </td>
           <td class="px-4 py-3 flex gap-2 justify-center">
-            <!-- Bouton Éditer -->
             <NuxtLink
               :to="`/admin/category/${category.id}/edit`"
-              class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              title="Éditer"
+              class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              <Icon
-                icon="mdi:pencil"
-                width="20"
-                class="text-yellow-500 hover:text-yellow-600"
-              />
+              <Icon icon="mdi:pencil" width="20" class="text-yellow-500" />
             </NuxtLink>
-
-            <!-- Bouton Changer de statut -->
-            <button
-              @click="toggleStatus(category)"
-              :class="[
-                'p-2 rounded-lg transition-colors',
-                category.status === 'active'
-                  ? 'hover:bg-red-100 dark:hover:bg-red-900/30'
-                  : 'hover:bg-green-100 dark:hover:bg-green-900/30'
-              ]"
-              :title="category.status === 'active' ? 'Désactiver' : 'Activer'"
-            >
-              <Icon
-                  :icon="category.status === 'active' ? 'mdi:toggle-switch' : 'mdi:toggle-switch-off'"
-                  width="18"
-                  :class="category.status === 'active' ? 'text-green-500' : 'text-gray-400'"
-                />
-            </button>
-
-            <!-- Bouton Supprimer -->
             <button
               @click="confirmDelete(category)"
-              class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              title="Supprimer"
+              class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              <Icon
-                icon="mdi:delete"
-                width="20"
-                class="text-red-500 hover:text-red-600"
-              />
+              <Icon icon="mdi:delete" width="20" class="text-red-500" />
             </button>
           </td>
         </tr>
