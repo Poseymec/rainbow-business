@@ -65,7 +65,7 @@
       <!-- Ligne de séparation -->
       <div class="border-t border-gray-800 pt-8 mt-8">
         <div class="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
-          <p>© {{ currentYear }} DIGITALPRINT Service. Tous droits réservés.</p>
+          <p>© {{ currentYear }} RAINBOW-BUSINESS & CONSULTING . Tous droits réservés. by DIGITALPRINT service</p>
           <div class="flex space-x-4 mt-4 md:mt-0">
             <NuxtLink to="/privacy" class="hover:text-white transition-colors">Politique de confidentialité</NuxtLink>
             <NuxtLink to="/terms" class="hover:text-white transition-colors">Conditions d'utilisation</NuxtLink>
@@ -100,24 +100,24 @@ const quickLinks = [
 const socials = [
   {
     name: 'Facebook',
-    url: '#',
+    url: 'https://www.facebook.com/share/19mhxJokTf/',
     icon: IconBrandFacebook
   },
-  {
+  /*{
     name: 'Twitter',
     url: '#',
     icon: IconBrandTwitter
-  },
+  },*/
   {
     name: 'Instagram',
-    url: '#',
+    url: 'https://www.instagram.com/rainbow.bc.ltd?igsh=NWoxbG51dncza3Rj',
     icon: IconBrandInstagram
   },
-  {
+ /* {
     name: 'LinkedIn',
     url: '#',
     icon: IconBrandLinkedin
-  }
+  }*/
 ]
 
 // Si tu n'utilises pas @tabler/icons-vue, remplace par des SVG inline ou utilise un CDN

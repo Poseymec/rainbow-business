@@ -9,7 +9,15 @@ darkMode: 'class',
     './plugins/**/*.{js,ts}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Lato', 'sans-serif'],      // pour le texte
+        heading: ['Poppins', 'sans-serif'] // pour les titres
+      }    
+      },
   },
   plugins: [],
+
+
+
 }

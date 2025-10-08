@@ -6,21 +6,25 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
-  // ✅ Un seul bloc routeRules
+  // ✅ Règles de routes (CORS & SSR)
   routeRules: {
     '/admin/**': { ssr: false },
     '/api/**': { cors: true }
   },
 
+  // ✅ Modules
   modules: [
     '@nuxt/eslint',
     '@nuxt/image',
     '@nuxtjs/i18n',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    
   ],
-
+  
+  // ✅ Styles globaux
   css: ['@/assets/css/main.css'],
 
+  // ✅ Vite plugins
   vite: {
     plugins: [
       tailwindcss(),
@@ -28,36 +32,56 @@ export default defineNuxtConfig({
     ]
   },
 
+  // ✅ i18n multilingue avec préfixe obligatoire
   i18n: {
-    strategy: 'prefix_except_default',
+    strategy: 'prefix', // ✅ Toutes les langues ont un préfixe (/fr, /en, etc.)
     defaultLocale: 'fr',
+
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      redirectOn: 'root'
+      alwaysRedirect: true,
+      redirectOn: 'root', // redirige uniquement depuis la racine
+      fallbackLocale: 'fr'
     },
+
     locales: [
       { code: 'fr', iso: 'fr-FR', file: 'fr.json', name: 'Français' },
       { code: 'en', iso: 'en-US', file: 'en.json', name: 'English' }
     ],
+
     langDir: 'locales',
-    vueI18n: './i18n.config.ts'
+    vueI18n: './i18n.config.ts',
+
+    // ✅ Important pour corriger les liens avec /app
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000/app'
   },
 
+  // ✅ Paramètres globaux
   app: {
     baseURL: '/app',
     head: {
-      title: 'Rainbow-busness'
+      title: 'Rainbow-business',
+      meta: [
+        { name: 'description', content: 'Plateforme marketing digital et impression – Rainbow Business' }
+      ],
+      link: [
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@500;700&display=swap'
+        }
+      ]
     }
   },
 
+  // ✅ Variables publiques
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000'
     }
   },
 
-  // ✅ Proxy API pour le développement
+  // ✅ Proxy pour l’API Laravel
   nitro: {
     devProxy: {
       '/api': {
@@ -67,4 +91,5 @@ export default defineNuxtConfig({
       }
     }
   }
+
 })

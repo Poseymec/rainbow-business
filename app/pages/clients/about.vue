@@ -3,19 +3,17 @@
     <div class="max-w-6xl mx-auto px-4 py-12 sm:py-16 md:py-24">
       <!-- Titre -->
       <div class="text-center mb-16">
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#E8192C] tracking-tight">
+        <h1 class="text-3xl font-heading sm:text-4xl md:text-5xl font-extrabold text-[#E8192C] tracking-tight">
           {{ t('about_page.title') }}
         </h1>
       </div>
 
       <!-- Description principale -->
       <div class="prose prose-lg dark:prose-invert max-w-3xl mx-auto mb-20 text-center">
-        <p class="text-gray-800 dark:text-gray-300 text-lg leading-relaxed">
+        <p class="text-gray-800 dark:text-gray-300 text-xl font-heading leading-relaxed">
           {{ t('about_page.description') }}
         </p>
-        <p class="mt-2 text-gray-600 dark:text-gray-400 font-medium">
-          {{ t('about_page.founded') }}
-        </p>
+      
       </div>
 
       <!-- Deux colonnes : Distribution + Approvisionnement -->
@@ -29,10 +27,10 @@
               <Icon icon="mdi:truck-delivery" width="28" class="text-[#E8192C] dark:text-red-400" />
             </div>
             <div>
-              <h2 class="text-xl font-bold text-[#E8192C] dark:text-[#E8192C] mb-3">
+              <h2 class="text-2xl  fon-heading font-bold text-[#E8192C] dark:text-[#E8192C] mb-3">
                 {{ t('about_page.distribution.title') }}
               </h2>
-              <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p class="text-gray-700 text-xl font-sans dark:text-gray-300 leading-relaxed">
                 {{ t('about_page.distribution.text') }}
               </p>
             </div>
@@ -48,10 +46,10 @@
               <Icon icon="mdi:clipboard-list" width="28" class="text-[#E8192C] dark:text-red-400" />
             </div>
             <div>
-              <h2 class="text-xl font-bold text-[#E8192C] dark:text-[#E8192C] mb-3">
+              <h2 class="text-2xl font-heading font-bold text-[#E8192C] dark:text-[#E8192C] mb-3">
                 {{ t('about_page.custom.title') }}
               </h2>
-              <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p class="text-gray-700 text-xl font-sans dark:text-gray-300 leading-relaxed">
                 {{ t('about_page.custom.text') }}
               </p>
             </div>

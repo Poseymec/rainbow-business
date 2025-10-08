@@ -11,6 +11,7 @@
 import { onMounted } from 'vue'
 import { useAuthStore } from '~/stores/authStore'
 
+
 const authStore = useAuthStore()
 
 onMounted(() => {
@@ -23,5 +24,6 @@ onMounted(async () => {
     credentials: 'include'
   })
 })
+
 </script>
 

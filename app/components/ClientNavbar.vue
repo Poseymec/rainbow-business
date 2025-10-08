@@ -22,7 +22,7 @@
             <NuxtLink
               :to="item.to"
               :class="[
-                'block py-2 px-3 rounded-lg hover:bg-gray-100/70 md:hover:bg-transparent md:hover:text-red-600 dark:text-gray-200 md:dark:hover:text-red-400 dark:hover:bg-gray-700/70 dark:hover:text-white md:dark:hover:bg-transparent transition-colors duration-200 text-center w-full text-sm font-medium',
+                ' font-sans  block py-2 px-3 rounded-lg hover:bg-gray-100/70 md:hover:bg-transparent md:hover:text-red-600 dark:text-gray-200 md:dark:hover:text-red-400 dark:hover:bg-gray-700/70 dark:hover:text-white md:dark:hover:bg-transparent transition-colors duration-200 text-center w-full text-lg font-medium',
                 isItemActive(item) ? 'text-red-600 dark:text-red-400' : ''
               ]"
               @click="isMenuOpen = false"
