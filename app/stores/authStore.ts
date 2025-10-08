@@ -1,6 +1,7 @@
 // ~/stores/authStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useRuntimeConfig } from '#imports'
 
 export interface User {
   id: number
@@ -8,34 +9,32 @@ export interface User {
   email: string
 }
 
-export interface LoginResponse {
-  token?: string // Sanctum n'utilise pas de JWT → on ne l'utilise pas
-  user: User
-}
-
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const config = useRuntimeConfig()
 
-  // Avec Sanctum, on ne stocke PAS le token → on utilise les cookies de session
   const isAuthenticated = computed(() => !!user.value)
 
-  // Récupère l'utilisateur courant (vérifie la session)
+  // ✅ Récupère le cookie CSRF
+  const fetchCsrfToken = async () => {
+    await $fetch(`${config.public.apiBase}/sanctum/csrf-cookie`, {
+      credentials: 'include'
+    })
+  }
+
   const fetchUser = async () => {
     if (!process.client) return
 
     loading.value = true
     try {
-      const data = await $fetch<User>('/api/user', {
-        credentials: 'include' // ⚠️ Très important pour les cookies
+      const data = await $fetch<User>(`${config.public.apiBase}/api/user`, {
+        credentials: 'include'
       })
       user.value = data
-    } catch (err) {
+    } catch {
       user.value = null
-      if (process.client) {
-        // Optionnel : clear localStorage si tu en utilises
-      }
     } finally {
       loading.value = false
     }
@@ -45,12 +44,13 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value = null
     try {
-      await $fetch('/api/login', {
+      await fetchCsrfToken() // ⚡ Obligatoire
+      await $fetch(`${config.public.apiBase}/api/login`, {
         method: 'POST',
         body: credentials,
-        credentials: 'include' // Envoie les cookies de session
+        credentials: 'include'
       })
-      await fetchUser() // Met à jour l'utilisateur après login
+      await fetchUser()
     } catch (err: any) {
       error.value = err.data?.message || 'Erreur de connexion'
       user.value = null
@@ -60,11 +60,17 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const register = async (data: { name: string; email: string; password: string; password_confirmation: string }) => {
+  const register = async (data: {
+    name: string
+    email: string
+    password: string
+    password_confirmation: string
+  }) => {
     loading.value = true
     error.value = null
     try {
-      await $fetch('/api/register', {
+      await fetchCsrfToken() // ⚡ Obligatoire
+      await $fetch(`${config.public.apiBase}/api/register`, {
         method: 'POST',
         body: data,
         credentials: 'include'
@@ -80,9 +86,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   const logout = async () => {
     if (!process.client) return
-
     try {
-      await $fetch('/api/logout', {
+      await fetchCsrfToken() // ⚡ Obligatoire
+      await $fetch(`${config.public.apiBase}/api/logout`, {
         method: 'POST',
         credentials: 'include'
       })
@@ -98,9 +104,11 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value = null
     try {
-      await $fetch('/api/forgot-password', {
+      await fetchCsrfToken()
+      await $fetch(`${config.public.apiBase}/api/forgot-password`, {
         method: 'POST',
-        body: { email }
+        body: { email },
+        credentials: 'include'
       })
     } catch (err: any) {
       error.value = err.data?.message || 'Erreur lors de l’envoi du lien'
@@ -119,11 +127,13 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value = null
     try {
-      await $fetch('/api/reset-password', {
+      await fetchCsrfToken()
+      await $fetch(`${config.public.apiBase}/api/reset-password`, {
         method: 'POST',
-        body: payload
+        body: payload,
+        credentials: 'include'
       })
-      await fetchUser() // Optionnel : auto-login après reset
+      await fetchUser()
     } catch (err: any) {
       error.value = err.data?.message || 'Erreur lors de la réinitialisation'
       throw err

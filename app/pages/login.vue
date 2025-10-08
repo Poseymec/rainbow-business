@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '~/stores/authStore'
+import { useAuthStore } from '../stores/authStore'
+
+import { definePageMeta } from '#imports'
 
 definePageMeta({ layout: 'auth' })
 
@@ -17,6 +19,14 @@ const login = async () => {
     alert('Erreur : ' + authStore.error)
   }
 }
+
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  if (authStore.isAuthenticated) {
+    router.push('/admin/product')
+  }
+})
 </script>
 <!-- app/pages/login.vue -->
 <template>

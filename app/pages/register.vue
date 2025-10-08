@@ -107,4 +107,12 @@ const register = async () => {
     alert('Erreur : ' + authStore.error)
   }
 }
+
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  if (authStore.isAuthenticated) {
+    router.push('/admin/product')
+  }
+})
 </script>

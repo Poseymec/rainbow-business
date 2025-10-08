@@ -16,5 +16,12 @@ const authStore = useAuthStore()
 onMounted(() => {
   authStore.fetchUser()
 })
+
+onMounted(async () => {
+  // Récupère le cookie CSRF (nécessaire pour Sanctum)
+  await $fetch('/sanctum/csrf-cookie', {
+    credentials: 'include'
+  })
+})
 </script>
 

@@ -1,6 +1,7 @@
 // ~/stores/categoryStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useRuntimeConfig } from '#imports'
 
 export interface Category {
   id: number
@@ -16,15 +17,19 @@ export const useCategoryStore = defineStore('category', () => {
   const categories = ref<Category[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const config = useRuntimeConfig()
 
   // Récupérer toutes les catégories
   const fetchCategories = async () => {
     loading.value = true
     error.value = null
     try {
-      const data = await $fetch<Category[]>('/api/categories', {
-        credentials: 'include' // ⚠️ Important pour Sanctum
+    
+
+      const data = await $fetch<Category[]>(`${config.public.apiBase}/api/categories`, {
+        credentials: 'include'
       })
+
       categories.value = data
     } catch (err: any) {
       error.value = err.data?.message || 'Erreur lors du chargement des catégories'
@@ -39,7 +44,8 @@ export const useCategoryStore = defineStore('category', () => {
     loading.value = true
     error.value = null
     try {
-      const newCategory = await $fetch<Category>('/api/categories', {
+   
+      const newCategory = await $fetch<Category>(`${config.public.apiBase}/api/categories`, {
         method: 'POST',
         body: category,
         credentials: 'include'
