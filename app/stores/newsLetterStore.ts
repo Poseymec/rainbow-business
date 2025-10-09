@@ -1,7 +1,7 @@
 // ~/stores/subscriberStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-
+import { useRuntimeConfig } from '#imports'
 export interface Subscriber {
   id: number
   email: string
@@ -13,12 +13,13 @@ export const useNewsLetterStore = defineStore('subscriber', () => {
   const subscribers = ref<Subscriber[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const config = useRuntimeConfig()
 
   const fetchSubscribers = async () => {
     loading.value = true
     error.value = null
     try {
-      const data = await $fetch<Subscriber[]>('/api/subscribers', {
+      const data = await $fetch<Subscriber[]>(`${config.public.apiBase}/api/newsletters`, {
         credentials: 'include'
       })
       subscribers.value = data
@@ -34,7 +35,7 @@ export const useNewsLetterStore = defineStore('subscriber', () => {
     loading.value = true
     error.value = null
     try {
-      const newSubscriber = await $fetch<Subscriber>('/api/subscribers', {
+      const newSubscriber = await $fetch<Subscriber>(`${config.public.apiBase}/api/newsletters`, {
         method: 'POST',
         body: subscriber,
         credentials: 'include'
@@ -53,7 +54,7 @@ export const useNewsLetterStore = defineStore('subscriber', () => {
     loading.value = true
     error.value = null
     try {
-      await $fetch(`/api/subscribers/${id}`, {
+      await $fetch(`${config.public.apiBase}/api/newsletters/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       })

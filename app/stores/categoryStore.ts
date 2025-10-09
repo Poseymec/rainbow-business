@@ -20,25 +20,26 @@ export const useCategoryStore = defineStore('category', () => {
   const config = useRuntimeConfig()
 
   // Récupérer toutes les catégories
-  const fetchCategories = async () => {
-    loading.value = true
-    error.value = null
-    try {
-    
+const fetchCategories = async () => {
+  loading.value = true
+  error.value = null
+  try {
+    const response = await $fetch<Category[] | { data: Category[] }>(`${config.public.apiBase}/api/categories`, {
+      credentials: 'include'
+    })
 
-      const data = await $fetch<Category[]>(`${config.public.apiBase}/api/categories`, {
-        credentials: 'include'
-      })
+    const data = Array.isArray(response)
+      ? response
+      : response.data || []
 
-      categories.value = data
-    } catch (err: any) {
-      error.value = err.data?.message || 'Erreur lors du chargement des catégories'
-      console.error(err)
-    } finally {
-      loading.value = false
-    }
+    categories.value = data as Category[]
+  } catch (err: any) {
+    error.value = err.data?.message || 'Erreur lors du chargement des catégories'
+    console.error(err)
+  } finally {
+    loading.value = false
   }
-
+}
   // Créer une catégorie
   const createCategory = async (category: Omit<Category, 'id' | 'created_at' | 'updated_at'>) => {
     loading.value = true
@@ -65,7 +66,7 @@ export const useCategoryStore = defineStore('category', () => {
     loading.value = true
     error.value = null
     try {
-      const updated = await $fetch<Category>(`/api/categories/${id}`, {
+      const updated = await $fetch<Category>(`${config.public.apiBase}/api/categories/${id}`, {
         method: 'PUT',
         body: category,
         credentials: 'include'
@@ -91,7 +92,7 @@ export const useCategoryStore = defineStore('category', () => {
     loading.value = true
     error.value = null
     try {
-      await $fetch(`/api/categories/${id}`, {
+      await $fetch(`${config.public.apiBase}/api/categories/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       })

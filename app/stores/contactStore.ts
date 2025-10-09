@@ -1,7 +1,7 @@
 // ~/stores/contactMessageStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-
+import { useRuntimeConfig } from '#imports'
 export interface ContactMessage {
   id: number
   name: string
@@ -16,12 +16,13 @@ export const useContactStore = defineStore('contactMessage', () => {
   const messages = ref<ContactMessage[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const config = useRuntimeConfig()
 
   const fetchMessages = async () => {
     loading.value = true
     error.value = null
     try {
-      const data = await $fetch<ContactMessage[]>('/api/contact-messages', {
+      const data = await $fetch<ContactMessage[]>(`${config.public.apiBase}/api/contacts`, {
         credentials: 'include'
       })
       messages.value = data
@@ -36,7 +37,7 @@ export const useContactStore = defineStore('contactMessage', () => {
   const createMessage = async (message: { name: string; email: string; phone?: string; subject: string; message: string }) => {
     // Pas de credentials ici → c’est un formulaire public
     try {
-      const newMessage = await $fetch<ContactMessage>('/api/contact-messages', {
+      const newMessage = await $fetch<ContactMessage>(`${config.public.apiBase}/api/contacts`, {
         method: 'POST',
         body: message
         // ❌ Pas de credentials: 'include' → pas besoin d’auth pour envoyer un message
@@ -51,7 +52,7 @@ export const useContactStore = defineStore('contactMessage', () => {
     loading.value = true
     error.value = null
     try {
-      await $fetch(`/api/contact-messages/${id}`, {
+      await $fetch(`${config.public.apiBase}/api/contacts/${id}`, {
         method: 'DELETE',
         credentials: 'include' // ✅ Suppression admin → besoin d’auth
       })

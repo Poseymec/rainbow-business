@@ -39,7 +39,7 @@
         >
           <option value="">Sélectionnez une catégorie</option>
           <option v-for="cat in categories" :key="cat.id" :value="cat.id">
-            {{ cat.name }}
+            {{ cat.name.fr || cat.name.en || 'Sans nom' }}
           </option>
         </select>
       </div>
@@ -172,6 +172,7 @@ onMounted(async () => {
   if (categoryStore.categories.length === 0) {
     await categoryStore.fetchCategories()
   }
+   console.log('Catégories chargées :', categoryStore.categories)
 })
 
 const form = reactive({

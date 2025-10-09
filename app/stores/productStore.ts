@@ -1,7 +1,7 @@
 // ~/stores/productStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-
+import { useRuntimeConfig } from '#imports'
 export interface Product {
   id: number
   name: {
@@ -28,12 +28,13 @@ export const useProductStore = defineStore('product', () => {
   const products = ref<Product[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const config = useRuntimeConfig()
 
   const fetchProducts = async () => {
     loading.value = true
     error.value = null
     try {
-      const data = await $fetch<Product[]>('/api/products', {
+      const data = await $fetch<Product[]>(`${config.public.apiBase}/api/produits`, {
         credentials: 'include'
       })
       products.value = data
@@ -50,7 +51,7 @@ export const useProductStore = defineStore('product', () => {
     error.value = null
     try {
       // Important : ne pas définir Content-Type → laisse le navigateur le gérer avec boundary
-      const newProduct = await $fetch<Product>('/api/products', {
+      const newProduct = await $fetch<Product>(`${config.public.apiBase}/api/produits`, {
         method: 'POST',
         body: formData,
         credentials: 'include'
@@ -71,7 +72,7 @@ export const useProductStore = defineStore('product', () => {
     try {
       // Laravel attend _method=PUT dans FormData
       formData.append('_method', 'PUT')
-      const updated = await $fetch<Product>(`/api/products/${id}`, {
+      const updated = await $fetch<Product>(`${config.public.apiBase}/api/produits/${id}`, {
         method: 'POST',
         body: formData,
         credentials: 'include'
@@ -95,7 +96,7 @@ export const useProductStore = defineStore('product', () => {
     loading.value = true
     error.value = null
     try {
-      await $fetch(`/api/products/${id}`, {
+      await $fetch(`${config.public.apiBase}/api/produits/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       })
