@@ -1,31 +1,33 @@
-
 <template>
   <nav
     class="bg-white/50 backdrop-blur border-b border-gray-200/40 dark:bg-gray-900/50 dark:border-gray-700/40 fixed top-4 left-4 right-4 z-50 rounded-2xl shadow-md shadow-black/25 dark:shadow-black/70 transition-all duration-300"
   >
     <div class="max-w-screen-xl mx-auto px-3 py-2 flex items-center justify-between">
       <!-- Logo -->
-      <NuxtLink to="/" class="flex items-center space-x-2 rtl:space-x-reverse z-10">
-        <img src="/images/logo.png" class="h-15" alt="Logo" />
+      <NuxtLink :to="localePath('/')" class="flex items-center space-x-2 rtl:space-x-reverse z-10">
+        <img src="/images/logo.png" class="h-10" alt="Logo" />
       </NuxtLink>
 
-      <!-- Menu -->
+      <!-- Menu mobile / desktop -->
       <div
-        :class="{ 'hidden': !isMenuOpen }"
-        class="absolute left-1/2 top-full -translate-x-1/2 pt-2 w-full md:static md:block md:pt-0 md:translate-x-0 md:w-auto md:left-0 transition-all duration-300 ease-in-out z-40 md:z-auto"
+        :class="[
+          'absolute left-1/2 top-full -translate-x-1/2 pt-2 w-full md:static md:block md:pt-0 md:translate-x-0 md:w-auto md:left-0 transition-all duration-300 ease-in-out z-40 md:z-auto',
+          { hidden: !isMenuOpen }
+        ]"
         id="navbar-mobile"
       >
         <ul
           class="flex flex-col md:flex-row justify-center items-center md:space-x-4 font-medium p-2 md:p-0 rounded-xl bg-gray-50/95 backdrop-blur-md md:bg-transparent dark:bg-gray-800/50 md:dark:bg-transparent border border-gray-100/40 md:border-0 dark:border-gray-700/40 w-full md:w-auto"
         >
-          <li v-for="item in navItems" :key="item.to" class="w-full md:w-auto">
+          <li v-for="item in navItems" :key="item.id" class="w-full md:w-auto">
             <NuxtLink
-              :to="item.to"
+              :to="getLink(item)"
               :class="[
-                ' font-sans  block py-2 px-3 rounded-lg hover:bg-gray-100/70 md:hover:bg-transparent md:hover:text-red-600 dark:text-gray-200 md:dark:hover:text-red-400 dark:hover:bg-gray-700/70 dark:hover:text-white md:dark:hover:bg-transparent transition-colors duration-200 text-center w-full text-lg font-medium',
-                isItemActive(item) ? 'text-red-600 dark:text-red-400' : ''
+                'font-sans block py-2 px-3 rounded-lg transition-colors duration-200 text-center w-full text-lg font-medium',
+                'hover:bg-gray-100/70 md:hover:bg-transparent md:hover:text-red-600 dark:text-gray-200 md:dark:hover:text-red-400 dark:hover:bg-gray-700/70 dark:hover:text-white md:dark:hover:bg-transparent',
+                isActive(item) ? 'text-red-600 dark:text-red-400 font-bold' : ''
               ]"
-              @click="isMenuOpen = false"
+              @click="closeMenu"
             >
               {{ item.label }}
             </NuxtLink>
@@ -33,12 +35,12 @@
         </ul>
       </div>
 
-      <!-- Contrôles -->
+      <!-- Contrôles (langue + thème + menu mobile) -->
       <div class="flex items-center gap-2 z-10">
         <LocaleSelector class="text-sm" />
         <ThemeSelector class="text-sm" />
         <button
-          @click="isMenuOpen = !isMenuOpen"
+          @click="toggleMenu"
           type="button"
           class="inline-flex items-center p-2 w-8 h-8 justify-center text-red-400 rounded-lg md:hidden hover:bg-red-100/70 focus:outline-none focus:ring-2 focus:ring-esd-300/50 dark:text-red-300 dark:hover:bg-red-700/70 dark:focus:ring-red-600/50 transition-colors duration-200"
           aria-label="Toggle main menu"
@@ -52,52 +54,88 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import { useRoute } from 'vue-router' // ⚠️ Important : 'vue-router', pas '#imports' pour useRoute
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useLocalePath } from '#i18n'
+
 import LocaleSelector from '~/components/LocaleSelector.vue'
 import ThemeSelector from '~/components/ThemeSelector.vue'
 import { IconMenu2, IconX } from '@tabler/icons-vue'
 
 const { t } = useI18n()
 const route = useRoute()
-const isMenuOpen = ref(false)
-const activeSection = ref('hero') // pour le scrollspy
+const localePath = useLocalePath()
 
-// Liste des items de navigation
+const isMenuOpen = ref(false)
+const activeSection = ref('hero')
+
+// --- NAVIGATION ITEMS ---
+// On distingue clairement :
+// - `page`: la route de base (utilisée pour la comparaison)
+// - `anchor`: l'ancre optionnelle (seulement pour la home)
 const navItems = computed(() => [
-  { to: '/', label: t('home-nav'), section: 'hero', route: '/' },
-  { to: '/#about', label: t('about'), section: 'about', route: '/' },
-  { to: '/#services', label: t('services'), section: 'services', route: '/' },
-  { to: '/#contact', label: t('contact'), section: 'contact', route: '/' },
-  { to: '/product', label: t('product'), section: null, route: '/product' }
+  { id: 'home', page: '/', anchor: null, label: t('home-nav') },
+  { id: 'about', page: '/', anchor: 'about', label: t('about') },
+  { id: 'services', page: '/', anchor: 'services', label: t('services') },
+  { id: 'contact', page: '/', anchor: 'contact', label: t('contact') },
+  { id: 'product', page: '/product', anchor: null, label: t('product') }
 ])
 
-// Fonction pour savoir si un item est actif
-const isItemActive = (item) => {
-  // Cas 1 : on est sur une page autre que l'accueil → comparaison classique
-  if (route.path !== '/') {
-    return route.path === item.route
-  }
-
-  // Cas 2 : on est sur la page d'accueil → utiliser le scrollspy
-  return activeSection.value === item.section
+// --- FERMETURE MENU ---
+const closeMenu = () => {
+  isMenuOpen.value = false
 }
 
-// --- Scrollspy (uniquement sur /) ---
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+// --- GÉNÉRATION DU LIEN ---
+const getLink = (item: { page: string; anchor: string | null }) => {
+  const base = localePath(item.page)
+  if (item.page === '/' && item.anchor) {
+    return `${base}#${item.anchor}`
+  }
+  return base
+}
+
+// --- DÉTECTION DE L'ÉLÉMENT ACTIF ---
+const isActive = (item: { page: string; anchor: string | null }): boolean => {
+  const currentLocalizedHome = localePath('/')
+  
+  // Cas 1 : on est sur la page d'accueil (ex: /fr)
+  if (route.path === currentLocalizedHome) {
+    if (item.page !== '/') return false
+    
+    // Accueil sans ancre → actif si on est en haut (hero)
+    if (!item.anchor) {
+      return activeSection.value === 'hero'
+    }
+    
+    // Ancres → actif si la section correspond
+    return activeSection.value === item.anchor
+  }
+
+  // Cas 2 : on est sur une autre page → comparaison exacte
+  return route.path === localePath(item.page)
+}
+
+// --- SCROLLSPY POUR LA PAGE D'ACCUEIL ---
 const updateActiveSection = () => {
-  if (route.path !== '/') return
+  const currentLocalizedHome = localePath('/')
+  if (route.path !== currentLocalizedHome) return
 
   const sections = ['hero', 'about', 'services', 'contact']
-  const scrollPosition = window.scrollY + 100 // offset pour meilleure détection
+  const scrollY = window.scrollY + 100 // offset pour déclencher plus tôt
 
   for (const id of sections) {
     const el = document.getElementById(id)
     if (el) {
       const top = el.offsetTop
       const height = el.offsetHeight
-      if (scrollPosition >= top && scrollPosition < top + height) {
+      if (scrollY >= top && scrollY < top + height) {
         activeSection.value = id
         return
       }
@@ -110,25 +148,25 @@ const updateActiveSection = () => {
   }
 }
 
+// --- ÉCOUTEURS ---
 onMounted(() => {
   window.addEventListener('scroll', updateActiveSection, { passive: true })
-  // Initialisation au chargement
-  setTimeout(updateActiveSection, 150)
+  // Lancer une première fois au montage (au cas où on arrive déjà scrollé)
+  setTimeout(updateActiveSection, 100)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateActiveSection)
 })
 
-// Réagir aux changements de route (ex: arrivée via /#contact ou /product)
+// Met à jour la section active après navigation (ex: clic sur #contact)
 watch(
   () => route.fullPath,
   () => {
-    if (route.path === '/') {
-      // Attendre que Nuxt ait scrollé vers l'ancre
+    const currentLocalizedHome = localePath('/')
+    if (route.path === currentLocalizedHome) {
       setTimeout(updateActiveSection, 300)
     }
-    // Pas besoin de gérer autre chose : isItemActive() s'adapte
   },
   { immediate: true }
 )

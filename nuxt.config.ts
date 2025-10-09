@@ -18,7 +18,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@pinia/nuxt',
-    
   ],
   
   // ✅ Styles globaux
@@ -34,14 +33,14 @@ export default defineNuxtConfig({
 
   // ✅ i18n multilingue avec préfixe obligatoire
   i18n: {
-    strategy: 'prefix', // ✅ Toutes les langues ont un préfixe (/fr, /en, etc.)
+   strategy: 'prefix',  // ✅ Toutes les langues ont un préfixe (/fr, /en, etc.)
     defaultLocale: 'fr',
 
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
       alwaysRedirect: true,
-      redirectOn: 'root', // redirige uniquement depuis la racine
+      redirectOn: 'root',
       fallbackLocale: 'fr'
     },
 
@@ -53,17 +52,17 @@ export default defineNuxtConfig({
     langDir: 'locales',
     vueI18n: './i18n.config.ts',
 
-    // ✅ Important pour corriger les liens avec /app
-    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000/app'
+    // ✅ Corrigé pour la racine du domaine
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
   },
 
   // ✅ Paramètres globaux
   app: {
-    baseURL: '/app',
+    baseURL: '/', // ✅ Plus de /app, on est à la racine
     head: {
-      title: 'Rainbow-business',
+      title: 'Rainbow Business',
       meta: [
-        { name: 'description', content: 'Plateforme marketing digital et impression – Rainbow Business' }
+        { name: 'description', content: 'Plateforme  de presentation des produits variés ' }
       ],
       link: [
         {
@@ -91,5 +90,4 @@ export default defineNuxtConfig({
       }
     }
   }
-
 })
